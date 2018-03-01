@@ -22,11 +22,21 @@ type (
 	ServerMetadata        = grpcgw.ServerMetadata
 )
 
+// Constants exported from package grpcgw
+const (
+	MIMEWildcard          = grpcgw.MIMEWildcard
+	MetadataHeaderPrefix  = grpcgw.MetadataHeaderPrefix
+	MetadataPrefix        = grpcgw.MetadataPrefix
+	MetadataTrailerPrefix = grpcgw.MetadataTrailerPrefix
+)
+
 // Package-level vars exported from package grpcgw
 var (
-	HTTPError             = grpcgw.HTTPError
-	ErrNotMatch           = grpcgw.ErrNotMatch
 	DefaultContextTimeout = grpcgw.DefaultContextTimeout
+	ErrInvalidPattern     = grpcgw.ErrInvalidPattern
+	ErrNotMatch           = grpcgw.ErrNotMatch
+	HTTPError             = grpcgw.HTTPError
+	OtherErrorHandler     = grpcgw.OtherErrorHandler
 )
 
 // Package-level funcs exported from package grpcgw
@@ -51,9 +61,14 @@ var (
 	Int32P                       = grpcgw.Int32P
 	Int64                        = grpcgw.Int64
 	Int64P                       = grpcgw.Int64P
+	MarshalerForRequest          = grpcgw.MarshalerForRequest
+	MustPattern                  = grpcgw.MustPattern
+	NewPattern                   = grpcgw.NewPattern
+	NewServeMux                  = grpcgw.NewServeMux
 	NewServerMetadataContext     = grpcgw.NewServerMetadataContext
 	PopulateFieldFromPath        = grpcgw.PopulateFieldFromPath
 	PopulateQueryParameters      = grpcgw.PopulateQueryParameters
+	ServerMetadataFromContext    = grpcgw.ServerMetadataFromContext
 	String                       = grpcgw.String
 	StringP                      = grpcgw.StringP
 	Timestamp                    = grpcgw.Timestamp
@@ -61,4 +76,10 @@ var (
 	Uint32P                      = grpcgw.Uint32P
 	Uint64                       = grpcgw.Uint64
 	Uint64P                      = grpcgw.Uint64P
+	WithForwardResponseOption    = grpcgw.WithForwardResponseOption
+	WithIncomingHeaderMatcher    = grpcgw.WithIncomingHeaderMatcher
+	WithMarshalerOption          = grpcgw.WithMarshalerOption
+	WithMetadata                 = grpcgw.WithMetadata
+	WithOutgoingHeaderMatcher    = grpcgw.WithOutgoingHeaderMatcher
+	WithProtoErrorHandler        = grpcgw.WithProtoErrorHandler
 )
