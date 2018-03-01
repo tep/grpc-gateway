@@ -32,8 +32,7 @@ func New(reg *descriptor.Registry, useRequestContext bool) gen.Generator {
 	for _, pkgpath := range []string{
 		"io",
 		"net/http",
-		"github.com/grpc-ecosystem/grpc-gateway/runtime",
-		"github.com/grpc-ecosystem/grpc-gateway/utilities",
+		"github.com/grpc-ecosystem/grpc-gateway/grpcgw",
 		"github.com/golang/protobuf/proto",
 		"golang.org/x/net/context",
 		"google.golang.org/grpc",

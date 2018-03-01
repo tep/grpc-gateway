@@ -1,4 +1,4 @@
-package runtime_test
+package grpcgw_test
 
 import (
 	"bytes"
@@ -14,7 +14,7 @@ import (
 	"github.com/golang/protobuf/ptypes/timestamp"
 	"github.com/golang/protobuf/ptypes/wrappers"
 	"github.com/grpc-ecosystem/grpc-gateway/examples/examplepb"
-	"github.com/grpc-ecosystem/grpc-gateway/runtime"
+	"github.com/grpc-ecosystem/grpc-gateway/grpcgw"
 )
 
 func TestJSONPbMarshal(t *testing.T) {
@@ -95,7 +95,7 @@ func TestJSONPbMarshal(t *testing.T) {
 			},
 		},
 	} {
-		m := runtime.JSONPb{
+		m := grpcgw.JSONPb{
 			EnumsAsInts:  spec.enumsAsInts,
 			EmitDefaults: spec.emitDefaults,
 			Indent:       spec.indent,
@@ -120,7 +120,7 @@ func TestJSONPbMarshal(t *testing.T) {
 }
 
 func TestJSONPbMarshalFields(t *testing.T) {
-	var m runtime.JSONPb
+	var m grpcgw.JSONPb
 	for _, spec := range []struct {
 		val  interface{}
 		want string
@@ -146,7 +146,7 @@ func TestJSONPbMarshalFields(t *testing.T) {
 
 func TestJSONPbUnmarshal(t *testing.T) {
 	var (
-		m   runtime.JSONPb
+		m   grpcgw.JSONPb
 		got examplepb.ABitOfEverything
 	)
 	for i, data := range []string{
@@ -220,7 +220,7 @@ func TestJSONPbUnmarshal(t *testing.T) {
 }
 
 func TestJSONPbUnmarshalFields(t *testing.T) {
-	var m runtime.JSONPb
+	var m grpcgw.JSONPb
 	for _, fixt := range fieldFixtures {
 		if fixt.skipUnmarshal {
 			continue
@@ -313,7 +313,7 @@ func TestJSONPbEncoder(t *testing.T) {
 			},
 		},
 	} {
-		m := runtime.JSONPb{
+		m := grpcgw.JSONPb{
 			EnumsAsInts:  spec.enumsAsInts,
 			EmitDefaults: spec.emitDefaults,
 			Indent:       spec.indent,
@@ -340,7 +340,7 @@ func TestJSONPbEncoder(t *testing.T) {
 }
 
 func TestJSONPbEncoderFields(t *testing.T) {
-	var m runtime.JSONPb
+	var m grpcgw.JSONPb
 	for _, fixt := range fieldFixtures {
 		var buf bytes.Buffer
 		enc := m.NewEncoder(&buf)
@@ -364,7 +364,7 @@ func TestJSONPbEncoderFields(t *testing.T) {
 
 func TestJSONPbDecoder(t *testing.T) {
 	var (
-		m   runtime.JSONPb
+		m   grpcgw.JSONPb
 		got examplepb.ABitOfEverything
 	)
 	for _, data := range []string{
@@ -439,7 +439,7 @@ func TestJSONPbDecoder(t *testing.T) {
 }
 
 func TestJSONPbDecoderFields(t *testing.T) {
-	var m runtime.JSONPb
+	var m grpcgw.JSONPb
 	for _, fixt := range fieldFixtures {
 		if fixt.skipUnmarshal {
 			continue

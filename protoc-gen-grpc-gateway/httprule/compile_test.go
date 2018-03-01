@@ -4,7 +4,7 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/grpc-ecosystem/grpc-gateway/utilities"
+	"github.com/grpc-ecosystem/grpc-gateway/grpcgw"
 )
 
 const (
@@ -25,19 +25,19 @@ func TestCompile(t *testing.T) {
 			segs: []segment{
 				wildcard{},
 			},
-			ops: []int{int(utilities.OpPush), operandFiller},
+			ops: []int{int(grpcgw.OpPush), operandFiller},
 		},
 		{
 			segs: []segment{
 				deepWildcard{},
 			},
-			ops: []int{int(utilities.OpPushM), operandFiller},
+			ops: []int{int(grpcgw.OpPushM), operandFiller},
 		},
 		{
 			segs: []segment{
 				literal("v1"),
 			},
-			ops:  []int{int(utilities.OpLitPush), 0},
+			ops:  []int{int(grpcgw.OpLitPush), 0},
 			pool: []string{"v1"},
 		},
 		{
@@ -45,7 +45,7 @@ func TestCompile(t *testing.T) {
 				literal("v1"),
 			},
 			verb: "LOCK",
-			ops:  []int{int(utilities.OpLitPush), 0},
+			ops:  []int{int(grpcgw.OpLitPush), 0},
 			pool: []string{"v1"},
 		},
 		{
@@ -58,9 +58,9 @@ func TestCompile(t *testing.T) {
 				},
 			},
 			ops: []int{
-				int(utilities.OpPush), operandFiller,
-				int(utilities.OpConcatN), 1,
-				int(utilities.OpCapture), 0,
+				int(grpcgw.OpPush), operandFiller,
+				int(grpcgw.OpConcatN), 1,
+				int(grpcgw.OpCapture), 0,
 			},
 			pool:   []string{"name.nested"},
 			fields: []string{"name.nested"},
@@ -84,15 +84,15 @@ func TestCompile(t *testing.T) {
 				},
 			},
 			ops: []int{
-				int(utilities.OpLitPush), 0,
-				int(utilities.OpLitPush), 1,
-				int(utilities.OpPush), operandFiller,
-				int(utilities.OpLitPush), 2,
-				int(utilities.OpConcatN), 3,
-				int(utilities.OpCapture), 3,
-				int(utilities.OpPushM), operandFiller,
-				int(utilities.OpConcatN), 1,
-				int(utilities.OpCapture), 0,
+				int(grpcgw.OpLitPush), 0,
+				int(grpcgw.OpLitPush), 1,
+				int(grpcgw.OpPush), operandFiller,
+				int(grpcgw.OpLitPush), 2,
+				int(grpcgw.OpConcatN), 3,
+				int(grpcgw.OpCapture), 3,
+				int(grpcgw.OpPushM), operandFiller,
+				int(grpcgw.OpConcatN), 1,
+				int(grpcgw.OpCapture), 0,
 			},
 			pool:   []string{"obj", "a", "b", "name.nested"},
 			fields: []string{"name.nested", "obj"},

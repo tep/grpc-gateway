@@ -7,8 +7,8 @@ import (
 	"text/template"
 
 	"github.com/golang/glog"
+	"github.com/grpc-ecosystem/grpc-gateway/grpcgw"
 	"github.com/grpc-ecosystem/grpc-gateway/protoc-gen-grpc-gateway/descriptor"
-	"github.com/grpc-ecosystem/grpc-gateway/utilities"
 )
 
 type param struct {
@@ -50,12 +50,12 @@ func (b binding) QueryParamFilter() queryParamFilter {
 	for _, p := range b.PathParams {
 		seqs = append(seqs, strings.Split(p.FieldPath.String(), "."))
 	}
-	return queryParamFilter{utilities.NewDoubleArray(seqs)}
+	return queryParamFilter{grpcgw.NewDoubleArray(seqs)}
 }
 
-// queryParamFilter is a wrapper of utilities.DoubleArray which provides String() to output DoubleArray.Encoding in a stable and predictable format.
+// queryParamFilter is a wrapper of grpcgw.DoubleArray which provides String() to output DoubleArray.Encoding in a stable and predictable format.
 type queryParamFilter struct {
-	*utilities.DoubleArray
+	*grpcgw.DoubleArray
 }
 
 func (f queryParamFilter) String() string {
@@ -64,7 +64,7 @@ func (f queryParamFilter) String() string {
 		encodings[enc] = fmt.Sprintf("%q: %d", str, enc)
 	}
 	e := strings.Join(encodings, ", ")
-	return fmt.Sprintf("&utilities.DoubleArray{Encoding: map[string]int{%s}, Base: %#v, Check: %#v}", e, f.Base, f.Check)
+	return fmt.Sprintf("&grpcgw.DoubleArray{Encoding: map[string]int{%s}, Base: %#v, Check: %#v}", e, f.Base, f.Check)
 }
 
 type trailerParams struct {
@@ -131,8 +131,8 @@ import (
 var _ codes.Code
 var _ io.Reader
 var _ status.Status
-var _ = runtime.String
-var _ = utilities.NewDoubleArray
+var _ = grpcgw.String
+var _ = grpcgw.NewDoubleArray
 `))
 
 	handlerTemplate = template.Must(template.New("handler").Parse(`
@@ -147,14 +147,14 @@ var _ = utilities.NewDoubleArray
 
 	_ = template.Must(handlerTemplate.New("request-func-signature").Parse(strings.Replace(`
 {{if .Method.GetServerStreaming}}
-func request_{{.Method.Service.GetName}}_{{.Method.GetName}}_{{.Index}}(ctx context.Context, marshaler runtime.Marshaler, client {{.Method.Service.GetName}}Client, req *http.Request, pathParams map[string]string) ({{.Method.Service.GetName}}_{{.Method.GetName}}Client, runtime.ServerMetadata, error)
+func request_{{.Method.Service.GetName}}_{{.Method.GetName}}_{{.Index}}(ctx context.Context, marshaler grpcgw.Marshaler, client {{.Method.Service.GetName}}Client, req *http.Request, pathParams map[string]string) ({{.Method.Service.GetName}}_{{.Method.GetName}}Client, grpcgw.ServerMetadata, error)
 {{else}}
-func request_{{.Method.Service.GetName}}_{{.Method.GetName}}_{{.Index}}(ctx context.Context, marshaler runtime.Marshaler, client {{.Method.Service.GetName}}Client, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error)
+func request_{{.Method.Service.GetName}}_{{.Method.GetName}}_{{.Index}}(ctx context.Context, marshaler grpcgw.Marshaler, client {{.Method.Service.GetName}}Client, req *http.Request, pathParams map[string]string) (proto.Message, grpcgw.ServerMetadata, error)
 {{end}}`, "\n", "", -1)))
 
 	_ = template.Must(handlerTemplate.New("client-streaming-request-func").Parse(`
 {{template "request-func-signature" .}} {
-	var metadata runtime.ServerMetadata
+	var metadata grpcgw.ServerMetadata
 	stream, err := client.{{.Method.GetName}}(ctx)
 	if err != nil {
 		grpclog.Printf("Failed to start streaming: %v", err)
@@ -205,7 +205,7 @@ var (
 {{end}}
 {{template "request-func-signature" .}} {
 	var protoReq {{.Method.RequestType.GoType .Method.Service.File.GoPkg.Path}}
-	var metadata runtime.ServerMetadata
+	var metadata grpcgw.ServerMetadata
 {{if .Body}}
 	if req.ContentLength > 0 {
 		if err := marshaler.NewDecoder(req.Body).Decode(&{{.Body.RHS "protoReq"}}); err != nil {
@@ -226,7 +226,7 @@ var (
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", {{$param | printf "%q"}})
 	}
 {{if $param.IsNestedProto3 }}
-	err = runtime.PopulateFieldFromPath(&protoReq, {{$param | printf "%q"}}, val)
+	err = grpcgw.PopulateFieldFromPath(&protoReq, {{$param | printf "%q"}}, val)
 {{else}}
 	{{$param.RHS "protoReq"}}, err = {{$param.ConvertFuncExpr}}(val)
 {{end}}
@@ -236,7 +236,7 @@ var (
 	{{end}}
 {{end}}
 {{if .HasQueryParam}}
-	if err := runtime.PopulateQueryParameters(&protoReq, req.URL.Query(), filter_{{.Method.Service.GetName}}_{{.Method.GetName}}_{{.Index}}); err != nil {
+	if err := grpcgw.PopulateQueryParameters(&protoReq, req.URL.Query(), filter_{{.Method.Service.GetName}}_{{.Method.GetName}}_{{.Index}}); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 {{end}}
@@ -259,7 +259,7 @@ var (
 
 	_ = template.Must(handlerTemplate.New("bidi-streaming-request-func").Parse(`
 {{template "request-func-signature" .}} {
-	var metadata runtime.ServerMetadata
+	var metadata grpcgw.ServerMetadata
 	stream, err := client.{{.Method.GetName}}(ctx)
 	if err != nil {
 		grpclog.Printf("Failed to start streaming: %v", err)
@@ -316,7 +316,7 @@ var (
 {{range $svc := .Services}}
 // Register{{$svc.GetName}}HandlerFromEndpoint is same as Register{{$svc.GetName}}Handler but
 // automatically dials to "endpoint" and closes the connection when "ctx" gets done.
-func Register{{$svc.GetName}}HandlerFromEndpoint(ctx context.Context, mux *runtime.ServeMux, endpoint string, opts []grpc.DialOption) (err error) {
+func Register{{$svc.GetName}}HandlerFromEndpoint(ctx context.Context, mux *grpcgw.ServeMux, endpoint string, opts []grpc.DialOption) (err error) {
 	conn, err := grpc.Dial(endpoint, opts...)
 	if err != nil {
 		return err
@@ -341,7 +341,7 @@ func Register{{$svc.GetName}}HandlerFromEndpoint(ctx context.Context, mux *runti
 
 // Register{{$svc.GetName}}Handler registers the http handlers for service {{$svc.GetName}} to "mux".
 // The handlers forward requests to the grpc endpoint over "conn".
-func Register{{$svc.GetName}}Handler(ctx context.Context, mux *runtime.ServeMux, conn *grpc.ClientConn) error {
+func Register{{$svc.GetName}}Handler(ctx context.Context, mux *grpcgw.ServeMux, conn *grpc.ClientConn) error {
 	return Register{{$svc.GetName}}HandlerClient(ctx, mux, New{{$svc.GetName}}Client(conn))
 }
 
@@ -350,7 +350,7 @@ func Register{{$svc.GetName}}Handler(ctx context.Context, mux *runtime.ServeMux,
 // Note: the gRPC framework executes interceptors within the gRPC handler. If the passed in "{{$svc.GetName}}Client"
 // doesn't go through the normal gRPC flow (creating a gRPC client etc.) then it will be up to the passed in
 // "{{$svc.GetName}}Client" to call the correct interceptors.
-func Register{{$svc.GetName}}HandlerClient(ctx context.Context, mux *runtime.ServeMux, client {{$svc.GetName}}Client) error {
+func Register{{$svc.GetName}}HandlerClient(ctx context.Context, mux *grpcgw.ServeMux, client {{$svc.GetName}}Client) error {
 	{{range $m := $svc.Methods}}
 	{{range $b := $m.Bindings}}
 	mux.Handle({{$b.HTTPMethod | printf "%q"}}, pattern_{{$svc.GetName}}_{{$m.GetName}}_{{$b.Index}}, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
@@ -369,16 +369,16 @@ func Register{{$svc.GetName}}HandlerClient(ctx context.Context, mux *runtime.Ser
 				}
 			}(ctx.Done(), cn.CloseNotify())
 		}
-		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		rctx, err := runtime.AnnotateContext(ctx, mux, req)
+		inboundMarshaler, outboundMarshaler := grpcgw.MarshalerForRequest(mux, req)
+		rctx, err := grpcgw.AnnotateContext(ctx, mux, req)
 		if err != nil {
-			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			grpcgw.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 		resp, md, err := request_{{$svc.GetName}}_{{$m.GetName}}_{{$b.Index}}(rctx, inboundMarshaler, client, req, pathParams)
-		ctx = runtime.NewServerMetadataContext(ctx, md)
+		ctx = grpcgw.NewServerMetadataContext(ctx, md)
 		if err != nil {
-			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			grpcgw.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 		{{if $m.GetServerStreaming}}
@@ -395,7 +395,7 @@ func Register{{$svc.GetName}}HandlerClient(ctx context.Context, mux *runtime.Ser
 var (
 	{{range $m := $svc.Methods}}
 	{{range $b := $m.Bindings}}
-	pattern_{{$svc.GetName}}_{{$m.GetName}}_{{$b.Index}} = runtime.MustPattern(runtime.NewPattern({{$b.PathTmpl.Version}}, {{$b.PathTmpl.OpCodes | printf "%#v"}}, {{$b.PathTmpl.Pool | printf "%#v"}}, {{$b.PathTmpl.Verb | printf "%q"}}))
+	pattern_{{$svc.GetName}}_{{$m.GetName}}_{{$b.Index}} = grpcgw.MustPattern(grpcgw.NewPattern({{$b.PathTmpl.Version}}, {{$b.PathTmpl.OpCodes | printf "%#v"}}, {{$b.PathTmpl.Pool | printf "%#v"}}, {{$b.PathTmpl.Verb | printf "%q"}}))
 	{{end}}
 	{{end}}
 )
@@ -403,7 +403,7 @@ var (
 var (
 	{{range $m := $svc.Methods}}
 	{{range $b := $m.Bindings}}
-	forward_{{$svc.GetName}}_{{$m.GetName}}_{{$b.Index}} = {{if $m.GetServerStreaming}}runtime.ForwardResponseStream{{else}}runtime.ForwardResponseMessage{{end}}
+	forward_{{$svc.GetName}}_{{$m.GetName}}_{{$b.Index}} = {{if $m.GetServerStreaming}}grpcgw.ForwardResponseStream{{else}}grpcgw.ForwardResponseMessage{{end}}
 	{{end}}
 	{{end}}
 )

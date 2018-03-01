@@ -16,8 +16,7 @@ import (
 	"github.com/golang/protobuf/ptypes/empty"
 	"github.com/grpc-ecosystem/grpc-gateway/examples/sub"
 	"github.com/grpc-ecosystem/grpc-gateway/examples/sub2"
-	"github.com/grpc-ecosystem/grpc-gateway/runtime"
-	"github.com/grpc-ecosystem/grpc-gateway/utilities"
+	"github.com/grpc-ecosystem/grpc-gateway/grpcgw"
 	"golang.org/x/net/context"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
@@ -28,16 +27,16 @@ import (
 var _ codes.Code
 var _ io.Reader
 var _ status.Status
-var _ = runtime.String
-var _ = utilities.NewDoubleArray
+var _ = grpcgw.String
+var _ = grpcgw.NewDoubleArray
 
 var (
-	filter_ABitOfEverythingService_Create_0 = &utilities.DoubleArray{Encoding: map[string]int{"float_value": 0, "double_value": 1, "int64_value": 2, "uint64_value": 3, "int32_value": 4, "fixed64_value": 5, "fixed32_value": 6, "bool_value": 7, "string_value": 8, "uint32_value": 9, "sfixed32_value": 10, "sfixed64_value": 11, "sint32_value": 12, "sint64_value": 13, "nonConventionalNameValue": 14}, Base: []int{1, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, Check: []int{0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16}}
+	filter_ABitOfEverythingService_Create_0 = &grpcgw.DoubleArray{Encoding: map[string]int{"float_value": 0, "double_value": 1, "int64_value": 2, "uint64_value": 3, "int32_value": 4, "fixed64_value": 5, "fixed32_value": 6, "bool_value": 7, "string_value": 8, "uint32_value": 9, "sfixed32_value": 10, "sfixed64_value": 11, "sint32_value": 12, "sint64_value": 13, "nonConventionalNameValue": 14}, Base: []int{1, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, Check: []int{0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16}}
 )
 
-func request_ABitOfEverythingService_Create_0(ctx context.Context, marshaler runtime.Marshaler, client ABitOfEverythingServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_ABitOfEverythingService_Create_0(ctx context.Context, marshaler grpcgw.Marshaler, client ABitOfEverythingServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, grpcgw.ServerMetadata, error) {
 	var protoReq ABitOfEverything
-	var metadata runtime.ServerMetadata
+	var metadata grpcgw.ServerMetadata
 
 	var (
 		val string
@@ -51,7 +50,7 @@ func request_ABitOfEverythingService_Create_0(ctx context.Context, marshaler run
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "float_value")
 	}
 
-	protoReq.FloatValue, err = runtime.Float32(val)
+	protoReq.FloatValue, err = grpcgw.Float32(val)
 
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "float_value", err)
@@ -62,7 +61,7 @@ func request_ABitOfEverythingService_Create_0(ctx context.Context, marshaler run
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "double_value")
 	}
 
-	protoReq.DoubleValue, err = runtime.Float64(val)
+	protoReq.DoubleValue, err = grpcgw.Float64(val)
 
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "double_value", err)
@@ -73,7 +72,7 @@ func request_ABitOfEverythingService_Create_0(ctx context.Context, marshaler run
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "int64_value")
 	}
 
-	protoReq.Int64Value, err = runtime.Int64(val)
+	protoReq.Int64Value, err = grpcgw.Int64(val)
 
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "int64_value", err)
@@ -84,7 +83,7 @@ func request_ABitOfEverythingService_Create_0(ctx context.Context, marshaler run
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "uint64_value")
 	}
 
-	protoReq.Uint64Value, err = runtime.Uint64(val)
+	protoReq.Uint64Value, err = grpcgw.Uint64(val)
 
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "uint64_value", err)
@@ -95,7 +94,7 @@ func request_ABitOfEverythingService_Create_0(ctx context.Context, marshaler run
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "int32_value")
 	}
 
-	protoReq.Int32Value, err = runtime.Int32(val)
+	protoReq.Int32Value, err = grpcgw.Int32(val)
 
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "int32_value", err)
@@ -106,7 +105,7 @@ func request_ABitOfEverythingService_Create_0(ctx context.Context, marshaler run
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "fixed64_value")
 	}
 
-	protoReq.Fixed64Value, err = runtime.Uint64(val)
+	protoReq.Fixed64Value, err = grpcgw.Uint64(val)
 
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "fixed64_value", err)
@@ -117,7 +116,7 @@ func request_ABitOfEverythingService_Create_0(ctx context.Context, marshaler run
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "fixed32_value")
 	}
 
-	protoReq.Fixed32Value, err = runtime.Uint32(val)
+	protoReq.Fixed32Value, err = grpcgw.Uint32(val)
 
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "fixed32_value", err)
@@ -128,7 +127,7 @@ func request_ABitOfEverythingService_Create_0(ctx context.Context, marshaler run
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "bool_value")
 	}
 
-	protoReq.BoolValue, err = runtime.Bool(val)
+	protoReq.BoolValue, err = grpcgw.Bool(val)
 
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "bool_value", err)
@@ -139,7 +138,7 @@ func request_ABitOfEverythingService_Create_0(ctx context.Context, marshaler run
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "string_value")
 	}
 
-	protoReq.StringValue, err = runtime.String(val)
+	protoReq.StringValue, err = grpcgw.String(val)
 
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "string_value", err)
@@ -150,7 +149,7 @@ func request_ABitOfEverythingService_Create_0(ctx context.Context, marshaler run
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "uint32_value")
 	}
 
-	protoReq.Uint32Value, err = runtime.Uint32(val)
+	protoReq.Uint32Value, err = grpcgw.Uint32(val)
 
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "uint32_value", err)
@@ -161,7 +160,7 @@ func request_ABitOfEverythingService_Create_0(ctx context.Context, marshaler run
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "sfixed32_value")
 	}
 
-	protoReq.Sfixed32Value, err = runtime.Int32(val)
+	protoReq.Sfixed32Value, err = grpcgw.Int32(val)
 
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "sfixed32_value", err)
@@ -172,7 +171,7 @@ func request_ABitOfEverythingService_Create_0(ctx context.Context, marshaler run
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "sfixed64_value")
 	}
 
-	protoReq.Sfixed64Value, err = runtime.Int64(val)
+	protoReq.Sfixed64Value, err = grpcgw.Int64(val)
 
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "sfixed64_value", err)
@@ -183,7 +182,7 @@ func request_ABitOfEverythingService_Create_0(ctx context.Context, marshaler run
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "sint32_value")
 	}
 
-	protoReq.Sint32Value, err = runtime.Int32(val)
+	protoReq.Sint32Value, err = grpcgw.Int32(val)
 
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "sint32_value", err)
@@ -194,7 +193,7 @@ func request_ABitOfEverythingService_Create_0(ctx context.Context, marshaler run
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "sint64_value")
 	}
 
-	protoReq.Sint64Value, err = runtime.Int64(val)
+	protoReq.Sint64Value, err = grpcgw.Int64(val)
 
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "sint64_value", err)
@@ -205,13 +204,13 @@ func request_ABitOfEverythingService_Create_0(ctx context.Context, marshaler run
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "nonConventionalNameValue")
 	}
 
-	protoReq.NonConventionalNameValue, err = runtime.String(val)
+	protoReq.NonConventionalNameValue, err = grpcgw.String(val)
 
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "nonConventionalNameValue", err)
 	}
 
-	if err := runtime.PopulateQueryParameters(&protoReq, req.URL.Query(), filter_ABitOfEverythingService_Create_0); err != nil {
+	if err := grpcgw.PopulateQueryParameters(&protoReq, req.URL.Query(), filter_ABitOfEverythingService_Create_0); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
@@ -220,9 +219,9 @@ func request_ABitOfEverythingService_Create_0(ctx context.Context, marshaler run
 
 }
 
-func request_ABitOfEverythingService_CreateBody_0(ctx context.Context, marshaler runtime.Marshaler, client ABitOfEverythingServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_ABitOfEverythingService_CreateBody_0(ctx context.Context, marshaler grpcgw.Marshaler, client ABitOfEverythingServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, grpcgw.ServerMetadata, error) {
 	var protoReq ABitOfEverything
-	var metadata runtime.ServerMetadata
+	var metadata grpcgw.ServerMetadata
 
 	if req.ContentLength > 0 {
 		if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil {
@@ -235,9 +234,9 @@ func request_ABitOfEverythingService_CreateBody_0(ctx context.Context, marshaler
 
 }
 
-func request_ABitOfEverythingService_Lookup_0(ctx context.Context, marshaler runtime.Marshaler, client ABitOfEverythingServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_ABitOfEverythingService_Lookup_0(ctx context.Context, marshaler grpcgw.Marshaler, client ABitOfEverythingServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, grpcgw.ServerMetadata, error) {
 	var protoReq sub2.IdMessage
-	var metadata runtime.ServerMetadata
+	var metadata grpcgw.ServerMetadata
 
 	var (
 		val string
@@ -251,7 +250,7 @@ func request_ABitOfEverythingService_Lookup_0(ctx context.Context, marshaler run
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "uuid")
 	}
 
-	protoReq.Uuid, err = runtime.String(val)
+	protoReq.Uuid, err = grpcgw.String(val)
 
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "uuid", err)
@@ -262,9 +261,9 @@ func request_ABitOfEverythingService_Lookup_0(ctx context.Context, marshaler run
 
 }
 
-func request_ABitOfEverythingService_Update_0(ctx context.Context, marshaler runtime.Marshaler, client ABitOfEverythingServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_ABitOfEverythingService_Update_0(ctx context.Context, marshaler grpcgw.Marshaler, client ABitOfEverythingServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, grpcgw.ServerMetadata, error) {
 	var protoReq ABitOfEverything
-	var metadata runtime.ServerMetadata
+	var metadata grpcgw.ServerMetadata
 
 	if req.ContentLength > 0 {
 		if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil {
@@ -284,7 +283,7 @@ func request_ABitOfEverythingService_Update_0(ctx context.Context, marshaler run
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "uuid")
 	}
 
-	protoReq.Uuid, err = runtime.String(val)
+	protoReq.Uuid, err = grpcgw.String(val)
 
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "uuid", err)
@@ -295,9 +294,9 @@ func request_ABitOfEverythingService_Update_0(ctx context.Context, marshaler run
 
 }
 
-func request_ABitOfEverythingService_Delete_0(ctx context.Context, marshaler runtime.Marshaler, client ABitOfEverythingServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_ABitOfEverythingService_Delete_0(ctx context.Context, marshaler grpcgw.Marshaler, client ABitOfEverythingServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, grpcgw.ServerMetadata, error) {
 	var protoReq sub2.IdMessage
-	var metadata runtime.ServerMetadata
+	var metadata grpcgw.ServerMetadata
 
 	var (
 		val string
@@ -311,7 +310,7 @@ func request_ABitOfEverythingService_Delete_0(ctx context.Context, marshaler run
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "uuid")
 	}
 
-	protoReq.Uuid, err = runtime.String(val)
+	protoReq.Uuid, err = grpcgw.String(val)
 
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "uuid", err)
@@ -323,12 +322,12 @@ func request_ABitOfEverythingService_Delete_0(ctx context.Context, marshaler run
 }
 
 var (
-	filter_ABitOfEverythingService_GetQuery_0 = &utilities.DoubleArray{Encoding: map[string]int{"uuid": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
+	filter_ABitOfEverythingService_GetQuery_0 = &grpcgw.DoubleArray{Encoding: map[string]int{"uuid": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
 )
 
-func request_ABitOfEverythingService_GetQuery_0(ctx context.Context, marshaler runtime.Marshaler, client ABitOfEverythingServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_ABitOfEverythingService_GetQuery_0(ctx context.Context, marshaler grpcgw.Marshaler, client ABitOfEverythingServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, grpcgw.ServerMetadata, error) {
 	var protoReq ABitOfEverything
-	var metadata runtime.ServerMetadata
+	var metadata grpcgw.ServerMetadata
 
 	var (
 		val string
@@ -342,13 +341,13 @@ func request_ABitOfEverythingService_GetQuery_0(ctx context.Context, marshaler r
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "uuid")
 	}
 
-	protoReq.Uuid, err = runtime.String(val)
+	protoReq.Uuid, err = grpcgw.String(val)
 
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "uuid", err)
 	}
 
-	if err := runtime.PopulateQueryParameters(&protoReq, req.URL.Query(), filter_ABitOfEverythingService_GetQuery_0); err != nil {
+	if err := grpcgw.PopulateQueryParameters(&protoReq, req.URL.Query(), filter_ABitOfEverythingService_GetQuery_0); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
@@ -357,9 +356,9 @@ func request_ABitOfEverythingService_GetQuery_0(ctx context.Context, marshaler r
 
 }
 
-func request_ABitOfEverythingService_Echo_0(ctx context.Context, marshaler runtime.Marshaler, client ABitOfEverythingServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_ABitOfEverythingService_Echo_0(ctx context.Context, marshaler grpcgw.Marshaler, client ABitOfEverythingServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, grpcgw.ServerMetadata, error) {
 	var protoReq sub.StringMessage
-	var metadata runtime.ServerMetadata
+	var metadata grpcgw.ServerMetadata
 
 	var (
 		val string
@@ -373,7 +372,7 @@ func request_ABitOfEverythingService_Echo_0(ctx context.Context, marshaler runti
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "value")
 	}
 
-	protoReq.Value, err = runtime.StringP(val)
+	protoReq.Value, err = grpcgw.StringP(val)
 
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "value", err)
@@ -384,9 +383,9 @@ func request_ABitOfEverythingService_Echo_0(ctx context.Context, marshaler runti
 
 }
 
-func request_ABitOfEverythingService_Echo_1(ctx context.Context, marshaler runtime.Marshaler, client ABitOfEverythingServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_ABitOfEverythingService_Echo_1(ctx context.Context, marshaler grpcgw.Marshaler, client ABitOfEverythingServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, grpcgw.ServerMetadata, error) {
 	var protoReq sub.StringMessage
-	var metadata runtime.ServerMetadata
+	var metadata grpcgw.ServerMetadata
 
 	if req.ContentLength > 0 {
 		if err := marshaler.NewDecoder(req.Body).Decode(&protoReq.Value); err != nil {
@@ -400,14 +399,14 @@ func request_ABitOfEverythingService_Echo_1(ctx context.Context, marshaler runti
 }
 
 var (
-	filter_ABitOfEverythingService_Echo_2 = &utilities.DoubleArray{Encoding: map[string]int{}, Base: []int(nil), Check: []int(nil)}
+	filter_ABitOfEverythingService_Echo_2 = &grpcgw.DoubleArray{Encoding: map[string]int{}, Base: []int(nil), Check: []int(nil)}
 )
 
-func request_ABitOfEverythingService_Echo_2(ctx context.Context, marshaler runtime.Marshaler, client ABitOfEverythingServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_ABitOfEverythingService_Echo_2(ctx context.Context, marshaler grpcgw.Marshaler, client ABitOfEverythingServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, grpcgw.ServerMetadata, error) {
 	var protoReq sub.StringMessage
-	var metadata runtime.ServerMetadata
+	var metadata grpcgw.ServerMetadata
 
-	if err := runtime.PopulateQueryParameters(&protoReq, req.URL.Query(), filter_ABitOfEverythingService_Echo_2); err != nil {
+	if err := grpcgw.PopulateQueryParameters(&protoReq, req.URL.Query(), filter_ABitOfEverythingService_Echo_2); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
@@ -416,9 +415,9 @@ func request_ABitOfEverythingService_Echo_2(ctx context.Context, marshaler runti
 
 }
 
-func request_ABitOfEverythingService_DeepPathEcho_0(ctx context.Context, marshaler runtime.Marshaler, client ABitOfEverythingServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_ABitOfEverythingService_DeepPathEcho_0(ctx context.Context, marshaler grpcgw.Marshaler, client ABitOfEverythingServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, grpcgw.ServerMetadata, error) {
 	var protoReq ABitOfEverything
-	var metadata runtime.ServerMetadata
+	var metadata grpcgw.ServerMetadata
 
 	if req.ContentLength > 0 {
 		if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil {
@@ -438,7 +437,7 @@ func request_ABitOfEverythingService_DeepPathEcho_0(ctx context.Context, marshal
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "single_nested.name")
 	}
 
-	err = runtime.PopulateFieldFromPath(&protoReq, "single_nested.name", val)
+	err = grpcgw.PopulateFieldFromPath(&protoReq, "single_nested.name", val)
 
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "single_nested.name", err)
@@ -449,27 +448,27 @@ func request_ABitOfEverythingService_DeepPathEcho_0(ctx context.Context, marshal
 
 }
 
-func request_ABitOfEverythingService_Timeout_0(ctx context.Context, marshaler runtime.Marshaler, client ABitOfEverythingServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_ABitOfEverythingService_Timeout_0(ctx context.Context, marshaler grpcgw.Marshaler, client ABitOfEverythingServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, grpcgw.ServerMetadata, error) {
 	var protoReq empty.Empty
-	var metadata runtime.ServerMetadata
+	var metadata grpcgw.ServerMetadata
 
 	msg, err := client.Timeout(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
 
 }
 
-func request_ABitOfEverythingService_ErrorWithDetails_0(ctx context.Context, marshaler runtime.Marshaler, client ABitOfEverythingServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_ABitOfEverythingService_ErrorWithDetails_0(ctx context.Context, marshaler grpcgw.Marshaler, client ABitOfEverythingServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, grpcgw.ServerMetadata, error) {
 	var protoReq empty.Empty
-	var metadata runtime.ServerMetadata
+	var metadata grpcgw.ServerMetadata
 
 	msg, err := client.ErrorWithDetails(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
 
 }
 
-func request_ABitOfEverythingService_GetMessageWithBody_0(ctx context.Context, marshaler runtime.Marshaler, client ABitOfEverythingServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_ABitOfEverythingService_GetMessageWithBody_0(ctx context.Context, marshaler grpcgw.Marshaler, client ABitOfEverythingServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, grpcgw.ServerMetadata, error) {
 	var protoReq MessageWithBody
-	var metadata runtime.ServerMetadata
+	var metadata grpcgw.ServerMetadata
 
 	if req.ContentLength > 0 {
 		if err := marshaler.NewDecoder(req.Body).Decode(&protoReq.Data); err != nil {
@@ -489,7 +488,7 @@ func request_ABitOfEverythingService_GetMessageWithBody_0(ctx context.Context, m
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "id")
 	}
 
-	protoReq.Id, err = runtime.String(val)
+	protoReq.Id, err = grpcgw.String(val)
 
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "id", err)
@@ -500,9 +499,9 @@ func request_ABitOfEverythingService_GetMessageWithBody_0(ctx context.Context, m
 
 }
 
-func request_ABitOfEverythingService_PostWithEmptyBody_0(ctx context.Context, marshaler runtime.Marshaler, client ABitOfEverythingServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_ABitOfEverythingService_PostWithEmptyBody_0(ctx context.Context, marshaler grpcgw.Marshaler, client ABitOfEverythingServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, grpcgw.ServerMetadata, error) {
 	var protoReq Body
-	var metadata runtime.ServerMetadata
+	var metadata grpcgw.ServerMetadata
 
 	if req.ContentLength > 0 {
 		if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil {
@@ -522,7 +521,7 @@ func request_ABitOfEverythingService_PostWithEmptyBody_0(ctx context.Context, ma
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "name")
 	}
 
-	protoReq.Name, err = runtime.String(val)
+	protoReq.Name, err = grpcgw.String(val)
 
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "name", err)
@@ -533,9 +532,9 @@ func request_ABitOfEverythingService_PostWithEmptyBody_0(ctx context.Context, ma
 
 }
 
-func request_CamelCaseServiceName_Empty_0(ctx context.Context, marshaler runtime.Marshaler, client CamelCaseServiceNameClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_CamelCaseServiceName_Empty_0(ctx context.Context, marshaler grpcgw.Marshaler, client CamelCaseServiceNameClient, req *http.Request, pathParams map[string]string) (proto.Message, grpcgw.ServerMetadata, error) {
 	var protoReq empty.Empty
-	var metadata runtime.ServerMetadata
+	var metadata grpcgw.ServerMetadata
 
 	msg, err := client.Empty(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
@@ -544,7 +543,7 @@ func request_CamelCaseServiceName_Empty_0(ctx context.Context, marshaler runtime
 
 // RegisterABitOfEverythingServiceHandlerFromEndpoint is same as RegisterABitOfEverythingServiceHandler but
 // automatically dials to "endpoint" and closes the connection when "ctx" gets done.
-func RegisterABitOfEverythingServiceHandlerFromEndpoint(ctx context.Context, mux *runtime.ServeMux, endpoint string, opts []grpc.DialOption) (err error) {
+func RegisterABitOfEverythingServiceHandlerFromEndpoint(ctx context.Context, mux *grpcgw.ServeMux, endpoint string, opts []grpc.DialOption) (err error) {
 	conn, err := grpc.Dial(endpoint, opts...)
 	if err != nil {
 		return err
@@ -569,7 +568,7 @@ func RegisterABitOfEverythingServiceHandlerFromEndpoint(ctx context.Context, mux
 
 // RegisterABitOfEverythingServiceHandler registers the http handlers for service ABitOfEverythingService to "mux".
 // The handlers forward requests to the grpc endpoint over "conn".
-func RegisterABitOfEverythingServiceHandler(ctx context.Context, mux *runtime.ServeMux, conn *grpc.ClientConn) error {
+func RegisterABitOfEverythingServiceHandler(ctx context.Context, mux *grpcgw.ServeMux, conn *grpc.ClientConn) error {
 	return RegisterABitOfEverythingServiceHandlerClient(ctx, mux, NewABitOfEverythingServiceClient(conn))
 }
 
@@ -578,7 +577,7 @@ func RegisterABitOfEverythingServiceHandler(ctx context.Context, mux *runtime.Se
 // Note: the gRPC framework executes interceptors within the gRPC handler. If the passed in "ABitOfEverythingServiceClient"
 // doesn't go through the normal gRPC flow (creating a gRPC client etc.) then it will be up to the passed in
 // "ABitOfEverythingServiceClient" to call the correct interceptors.
-func RegisterABitOfEverythingServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux, client ABitOfEverythingServiceClient) error {
+func RegisterABitOfEverythingServiceHandlerClient(ctx context.Context, mux *grpcgw.ServeMux, client ABitOfEverythingServiceClient) error {
 
 	mux.Handle("POST", pattern_ABitOfEverythingService_Create_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
@@ -592,16 +591,16 @@ func RegisterABitOfEverythingServiceHandlerClient(ctx context.Context, mux *runt
 				}
 			}(ctx.Done(), cn.CloseNotify())
 		}
-		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		rctx, err := runtime.AnnotateContext(ctx, mux, req)
+		inboundMarshaler, outboundMarshaler := grpcgw.MarshalerForRequest(mux, req)
+		rctx, err := grpcgw.AnnotateContext(ctx, mux, req)
 		if err != nil {
-			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			grpcgw.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 		resp, md, err := request_ABitOfEverythingService_Create_0(rctx, inboundMarshaler, client, req, pathParams)
-		ctx = runtime.NewServerMetadataContext(ctx, md)
+		ctx = grpcgw.NewServerMetadataContext(ctx, md)
 		if err != nil {
-			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			grpcgw.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
@@ -621,16 +620,16 @@ func RegisterABitOfEverythingServiceHandlerClient(ctx context.Context, mux *runt
 				}
 			}(ctx.Done(), cn.CloseNotify())
 		}
-		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		rctx, err := runtime.AnnotateContext(ctx, mux, req)
+		inboundMarshaler, outboundMarshaler := grpcgw.MarshalerForRequest(mux, req)
+		rctx, err := grpcgw.AnnotateContext(ctx, mux, req)
 		if err != nil {
-			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			grpcgw.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 		resp, md, err := request_ABitOfEverythingService_CreateBody_0(rctx, inboundMarshaler, client, req, pathParams)
-		ctx = runtime.NewServerMetadataContext(ctx, md)
+		ctx = grpcgw.NewServerMetadataContext(ctx, md)
 		if err != nil {
-			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			grpcgw.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
@@ -650,16 +649,16 @@ func RegisterABitOfEverythingServiceHandlerClient(ctx context.Context, mux *runt
 				}
 			}(ctx.Done(), cn.CloseNotify())
 		}
-		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		rctx, err := runtime.AnnotateContext(ctx, mux, req)
+		inboundMarshaler, outboundMarshaler := grpcgw.MarshalerForRequest(mux, req)
+		rctx, err := grpcgw.AnnotateContext(ctx, mux, req)
 		if err != nil {
-			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			grpcgw.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 		resp, md, err := request_ABitOfEverythingService_Lookup_0(rctx, inboundMarshaler, client, req, pathParams)
-		ctx = runtime.NewServerMetadataContext(ctx, md)
+		ctx = grpcgw.NewServerMetadataContext(ctx, md)
 		if err != nil {
-			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			grpcgw.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
@@ -679,16 +678,16 @@ func RegisterABitOfEverythingServiceHandlerClient(ctx context.Context, mux *runt
 				}
 			}(ctx.Done(), cn.CloseNotify())
 		}
-		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		rctx, err := runtime.AnnotateContext(ctx, mux, req)
+		inboundMarshaler, outboundMarshaler := grpcgw.MarshalerForRequest(mux, req)
+		rctx, err := grpcgw.AnnotateContext(ctx, mux, req)
 		if err != nil {
-			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			grpcgw.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 		resp, md, err := request_ABitOfEverythingService_Update_0(rctx, inboundMarshaler, client, req, pathParams)
-		ctx = runtime.NewServerMetadataContext(ctx, md)
+		ctx = grpcgw.NewServerMetadataContext(ctx, md)
 		if err != nil {
-			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			grpcgw.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
@@ -708,16 +707,16 @@ func RegisterABitOfEverythingServiceHandlerClient(ctx context.Context, mux *runt
 				}
 			}(ctx.Done(), cn.CloseNotify())
 		}
-		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		rctx, err := runtime.AnnotateContext(ctx, mux, req)
+		inboundMarshaler, outboundMarshaler := grpcgw.MarshalerForRequest(mux, req)
+		rctx, err := grpcgw.AnnotateContext(ctx, mux, req)
 		if err != nil {
-			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			grpcgw.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 		resp, md, err := request_ABitOfEverythingService_Delete_0(rctx, inboundMarshaler, client, req, pathParams)
-		ctx = runtime.NewServerMetadataContext(ctx, md)
+		ctx = grpcgw.NewServerMetadataContext(ctx, md)
 		if err != nil {
-			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			grpcgw.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
@@ -737,16 +736,16 @@ func RegisterABitOfEverythingServiceHandlerClient(ctx context.Context, mux *runt
 				}
 			}(ctx.Done(), cn.CloseNotify())
 		}
-		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		rctx, err := runtime.AnnotateContext(ctx, mux, req)
+		inboundMarshaler, outboundMarshaler := grpcgw.MarshalerForRequest(mux, req)
+		rctx, err := grpcgw.AnnotateContext(ctx, mux, req)
 		if err != nil {
-			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			grpcgw.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 		resp, md, err := request_ABitOfEverythingService_GetQuery_0(rctx, inboundMarshaler, client, req, pathParams)
-		ctx = runtime.NewServerMetadataContext(ctx, md)
+		ctx = grpcgw.NewServerMetadataContext(ctx, md)
 		if err != nil {
-			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			grpcgw.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
@@ -766,16 +765,16 @@ func RegisterABitOfEverythingServiceHandlerClient(ctx context.Context, mux *runt
 				}
 			}(ctx.Done(), cn.CloseNotify())
 		}
-		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		rctx, err := runtime.AnnotateContext(ctx, mux, req)
+		inboundMarshaler, outboundMarshaler := grpcgw.MarshalerForRequest(mux, req)
+		rctx, err := grpcgw.AnnotateContext(ctx, mux, req)
 		if err != nil {
-			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			grpcgw.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 		resp, md, err := request_ABitOfEverythingService_Echo_0(rctx, inboundMarshaler, client, req, pathParams)
-		ctx = runtime.NewServerMetadataContext(ctx, md)
+		ctx = grpcgw.NewServerMetadataContext(ctx, md)
 		if err != nil {
-			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			grpcgw.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
@@ -795,16 +794,16 @@ func RegisterABitOfEverythingServiceHandlerClient(ctx context.Context, mux *runt
 				}
 			}(ctx.Done(), cn.CloseNotify())
 		}
-		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		rctx, err := runtime.AnnotateContext(ctx, mux, req)
+		inboundMarshaler, outboundMarshaler := grpcgw.MarshalerForRequest(mux, req)
+		rctx, err := grpcgw.AnnotateContext(ctx, mux, req)
 		if err != nil {
-			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			grpcgw.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 		resp, md, err := request_ABitOfEverythingService_Echo_1(rctx, inboundMarshaler, client, req, pathParams)
-		ctx = runtime.NewServerMetadataContext(ctx, md)
+		ctx = grpcgw.NewServerMetadataContext(ctx, md)
 		if err != nil {
-			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			grpcgw.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
@@ -824,16 +823,16 @@ func RegisterABitOfEverythingServiceHandlerClient(ctx context.Context, mux *runt
 				}
 			}(ctx.Done(), cn.CloseNotify())
 		}
-		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		rctx, err := runtime.AnnotateContext(ctx, mux, req)
+		inboundMarshaler, outboundMarshaler := grpcgw.MarshalerForRequest(mux, req)
+		rctx, err := grpcgw.AnnotateContext(ctx, mux, req)
 		if err != nil {
-			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			grpcgw.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 		resp, md, err := request_ABitOfEverythingService_Echo_2(rctx, inboundMarshaler, client, req, pathParams)
-		ctx = runtime.NewServerMetadataContext(ctx, md)
+		ctx = grpcgw.NewServerMetadataContext(ctx, md)
 		if err != nil {
-			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			grpcgw.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
@@ -853,16 +852,16 @@ func RegisterABitOfEverythingServiceHandlerClient(ctx context.Context, mux *runt
 				}
 			}(ctx.Done(), cn.CloseNotify())
 		}
-		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		rctx, err := runtime.AnnotateContext(ctx, mux, req)
+		inboundMarshaler, outboundMarshaler := grpcgw.MarshalerForRequest(mux, req)
+		rctx, err := grpcgw.AnnotateContext(ctx, mux, req)
 		if err != nil {
-			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			grpcgw.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 		resp, md, err := request_ABitOfEverythingService_DeepPathEcho_0(rctx, inboundMarshaler, client, req, pathParams)
-		ctx = runtime.NewServerMetadataContext(ctx, md)
+		ctx = grpcgw.NewServerMetadataContext(ctx, md)
 		if err != nil {
-			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			grpcgw.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
@@ -882,16 +881,16 @@ func RegisterABitOfEverythingServiceHandlerClient(ctx context.Context, mux *runt
 				}
 			}(ctx.Done(), cn.CloseNotify())
 		}
-		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		rctx, err := runtime.AnnotateContext(ctx, mux, req)
+		inboundMarshaler, outboundMarshaler := grpcgw.MarshalerForRequest(mux, req)
+		rctx, err := grpcgw.AnnotateContext(ctx, mux, req)
 		if err != nil {
-			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			grpcgw.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 		resp, md, err := request_ABitOfEverythingService_Timeout_0(rctx, inboundMarshaler, client, req, pathParams)
-		ctx = runtime.NewServerMetadataContext(ctx, md)
+		ctx = grpcgw.NewServerMetadataContext(ctx, md)
 		if err != nil {
-			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			grpcgw.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
@@ -911,16 +910,16 @@ func RegisterABitOfEverythingServiceHandlerClient(ctx context.Context, mux *runt
 				}
 			}(ctx.Done(), cn.CloseNotify())
 		}
-		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		rctx, err := runtime.AnnotateContext(ctx, mux, req)
+		inboundMarshaler, outboundMarshaler := grpcgw.MarshalerForRequest(mux, req)
+		rctx, err := grpcgw.AnnotateContext(ctx, mux, req)
 		if err != nil {
-			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			grpcgw.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 		resp, md, err := request_ABitOfEverythingService_ErrorWithDetails_0(rctx, inboundMarshaler, client, req, pathParams)
-		ctx = runtime.NewServerMetadataContext(ctx, md)
+		ctx = grpcgw.NewServerMetadataContext(ctx, md)
 		if err != nil {
-			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			grpcgw.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
@@ -940,16 +939,16 @@ func RegisterABitOfEverythingServiceHandlerClient(ctx context.Context, mux *runt
 				}
 			}(ctx.Done(), cn.CloseNotify())
 		}
-		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		rctx, err := runtime.AnnotateContext(ctx, mux, req)
+		inboundMarshaler, outboundMarshaler := grpcgw.MarshalerForRequest(mux, req)
+		rctx, err := grpcgw.AnnotateContext(ctx, mux, req)
 		if err != nil {
-			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			grpcgw.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 		resp, md, err := request_ABitOfEverythingService_GetMessageWithBody_0(rctx, inboundMarshaler, client, req, pathParams)
-		ctx = runtime.NewServerMetadataContext(ctx, md)
+		ctx = grpcgw.NewServerMetadataContext(ctx, md)
 		if err != nil {
-			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			grpcgw.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
@@ -969,16 +968,16 @@ func RegisterABitOfEverythingServiceHandlerClient(ctx context.Context, mux *runt
 				}
 			}(ctx.Done(), cn.CloseNotify())
 		}
-		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		rctx, err := runtime.AnnotateContext(ctx, mux, req)
+		inboundMarshaler, outboundMarshaler := grpcgw.MarshalerForRequest(mux, req)
+		rctx, err := grpcgw.AnnotateContext(ctx, mux, req)
 		if err != nil {
-			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			grpcgw.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 		resp, md, err := request_ABitOfEverythingService_PostWithEmptyBody_0(rctx, inboundMarshaler, client, req, pathParams)
-		ctx = runtime.NewServerMetadataContext(ctx, md)
+		ctx = grpcgw.NewServerMetadataContext(ctx, md)
 		if err != nil {
-			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			grpcgw.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
@@ -990,68 +989,68 @@ func RegisterABitOfEverythingServiceHandlerClient(ctx context.Context, mux *runt
 }
 
 var (
-	pattern_ABitOfEverythingService_Create_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 1, 0, 4, 1, 5, 4, 1, 0, 4, 1, 5, 5, 2, 6, 1, 0, 4, 1, 5, 7, 1, 0, 4, 1, 5, 8, 1, 0, 4, 1, 5, 9, 1, 0, 4, 1, 5, 10, 1, 0, 4, 1, 5, 11, 2, 12, 1, 0, 4, 2, 5, 13, 1, 0, 4, 1, 5, 14, 1, 0, 4, 1, 5, 15, 1, 0, 4, 1, 5, 16, 1, 0, 4, 1, 5, 17, 1, 0, 4, 1, 5, 18, 1, 0, 4, 1, 5, 19}, []string{"v1", "example", "a_bit_of_everything", "float_value", "double_value", "int64_value", "separator", "uint64_value", "int32_value", "fixed64_value", "fixed32_value", "bool_value", "strprefix", "string_value", "uint32_value", "sfixed32_value", "sfixed64_value", "sint32_value", "sint64_value", "nonConventionalNameValue"}, ""))
+	pattern_ABitOfEverythingService_Create_0 = grpcgw.MustPattern(grpcgw.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 1, 0, 4, 1, 5, 4, 1, 0, 4, 1, 5, 5, 2, 6, 1, 0, 4, 1, 5, 7, 1, 0, 4, 1, 5, 8, 1, 0, 4, 1, 5, 9, 1, 0, 4, 1, 5, 10, 1, 0, 4, 1, 5, 11, 2, 12, 1, 0, 4, 2, 5, 13, 1, 0, 4, 1, 5, 14, 1, 0, 4, 1, 5, 15, 1, 0, 4, 1, 5, 16, 1, 0, 4, 1, 5, 17, 1, 0, 4, 1, 5, 18, 1, 0, 4, 1, 5, 19}, []string{"v1", "example", "a_bit_of_everything", "float_value", "double_value", "int64_value", "separator", "uint64_value", "int32_value", "fixed64_value", "fixed32_value", "bool_value", "strprefix", "string_value", "uint32_value", "sfixed32_value", "sfixed64_value", "sint32_value", "sint64_value", "nonConventionalNameValue"}, ""))
 
-	pattern_ABitOfEverythingService_CreateBody_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v1", "example", "a_bit_of_everything"}, ""))
+	pattern_ABitOfEverythingService_CreateBody_0 = grpcgw.MustPattern(grpcgw.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v1", "example", "a_bit_of_everything"}, ""))
 
-	pattern_ABitOfEverythingService_Lookup_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"v1", "example", "a_bit_of_everything", "uuid"}, ""))
+	pattern_ABitOfEverythingService_Lookup_0 = grpcgw.MustPattern(grpcgw.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"v1", "example", "a_bit_of_everything", "uuid"}, ""))
 
-	pattern_ABitOfEverythingService_Update_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"v1", "example", "a_bit_of_everything", "uuid"}, ""))
+	pattern_ABitOfEverythingService_Update_0 = grpcgw.MustPattern(grpcgw.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"v1", "example", "a_bit_of_everything", "uuid"}, ""))
 
-	pattern_ABitOfEverythingService_Delete_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"v1", "example", "a_bit_of_everything", "uuid"}, ""))
+	pattern_ABitOfEverythingService_Delete_0 = grpcgw.MustPattern(grpcgw.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"v1", "example", "a_bit_of_everything", "uuid"}, ""))
 
-	pattern_ABitOfEverythingService_GetQuery_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4}, []string{"v1", "example", "a_bit_of_everything", "query", "uuid"}, ""))
+	pattern_ABitOfEverythingService_GetQuery_0 = grpcgw.MustPattern(grpcgw.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4}, []string{"v1", "example", "a_bit_of_everything", "query", "uuid"}, ""))
 
-	pattern_ABitOfEverythingService_Echo_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4}, []string{"v1", "example", "a_bit_of_everything", "echo", "value"}, ""))
+	pattern_ABitOfEverythingService_Echo_0 = grpcgw.MustPattern(grpcgw.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4}, []string{"v1", "example", "a_bit_of_everything", "echo", "value"}, ""))
 
-	pattern_ABitOfEverythingService_Echo_1 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v2", "example", "echo"}, ""))
+	pattern_ABitOfEverythingService_Echo_1 = grpcgw.MustPattern(grpcgw.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v2", "example", "echo"}, ""))
 
-	pattern_ABitOfEverythingService_Echo_2 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v2", "example", "echo"}, ""))
+	pattern_ABitOfEverythingService_Echo_2 = grpcgw.MustPattern(grpcgw.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v2", "example", "echo"}, ""))
 
-	pattern_ABitOfEverythingService_DeepPathEcho_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"v1", "example", "a_bit_of_everything", "single_nested.name"}, ""))
+	pattern_ABitOfEverythingService_DeepPathEcho_0 = grpcgw.MustPattern(grpcgw.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"v1", "example", "a_bit_of_everything", "single_nested.name"}, ""))
 
-	pattern_ABitOfEverythingService_Timeout_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v2", "example", "timeout"}, ""))
+	pattern_ABitOfEverythingService_Timeout_0 = grpcgw.MustPattern(grpcgw.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v2", "example", "timeout"}, ""))
 
-	pattern_ABitOfEverythingService_ErrorWithDetails_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v2", "example", "errorwithdetails"}, ""))
+	pattern_ABitOfEverythingService_ErrorWithDetails_0 = grpcgw.MustPattern(grpcgw.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v2", "example", "errorwithdetails"}, ""))
 
-	pattern_ABitOfEverythingService_GetMessageWithBody_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"v2", "example", "withbody", "id"}, ""))
+	pattern_ABitOfEverythingService_GetMessageWithBody_0 = grpcgw.MustPattern(grpcgw.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"v2", "example", "withbody", "id"}, ""))
 
-	pattern_ABitOfEverythingService_PostWithEmptyBody_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"v2", "example", "postwithemptybody", "name"}, ""))
+	pattern_ABitOfEverythingService_PostWithEmptyBody_0 = grpcgw.MustPattern(grpcgw.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"v2", "example", "postwithemptybody", "name"}, ""))
 )
 
 var (
-	forward_ABitOfEverythingService_Create_0 = runtime.ForwardResponseMessage
+	forward_ABitOfEverythingService_Create_0 = grpcgw.ForwardResponseMessage
 
-	forward_ABitOfEverythingService_CreateBody_0 = runtime.ForwardResponseMessage
+	forward_ABitOfEverythingService_CreateBody_0 = grpcgw.ForwardResponseMessage
 
-	forward_ABitOfEverythingService_Lookup_0 = runtime.ForwardResponseMessage
+	forward_ABitOfEverythingService_Lookup_0 = grpcgw.ForwardResponseMessage
 
-	forward_ABitOfEverythingService_Update_0 = runtime.ForwardResponseMessage
+	forward_ABitOfEverythingService_Update_0 = grpcgw.ForwardResponseMessage
 
-	forward_ABitOfEverythingService_Delete_0 = runtime.ForwardResponseMessage
+	forward_ABitOfEverythingService_Delete_0 = grpcgw.ForwardResponseMessage
 
-	forward_ABitOfEverythingService_GetQuery_0 = runtime.ForwardResponseMessage
+	forward_ABitOfEverythingService_GetQuery_0 = grpcgw.ForwardResponseMessage
 
-	forward_ABitOfEverythingService_Echo_0 = runtime.ForwardResponseMessage
+	forward_ABitOfEverythingService_Echo_0 = grpcgw.ForwardResponseMessage
 
-	forward_ABitOfEverythingService_Echo_1 = runtime.ForwardResponseMessage
+	forward_ABitOfEverythingService_Echo_1 = grpcgw.ForwardResponseMessage
 
-	forward_ABitOfEverythingService_Echo_2 = runtime.ForwardResponseMessage
+	forward_ABitOfEverythingService_Echo_2 = grpcgw.ForwardResponseMessage
 
-	forward_ABitOfEverythingService_DeepPathEcho_0 = runtime.ForwardResponseMessage
+	forward_ABitOfEverythingService_DeepPathEcho_0 = grpcgw.ForwardResponseMessage
 
-	forward_ABitOfEverythingService_Timeout_0 = runtime.ForwardResponseMessage
+	forward_ABitOfEverythingService_Timeout_0 = grpcgw.ForwardResponseMessage
 
-	forward_ABitOfEverythingService_ErrorWithDetails_0 = runtime.ForwardResponseMessage
+	forward_ABitOfEverythingService_ErrorWithDetails_0 = grpcgw.ForwardResponseMessage
 
-	forward_ABitOfEverythingService_GetMessageWithBody_0 = runtime.ForwardResponseMessage
+	forward_ABitOfEverythingService_GetMessageWithBody_0 = grpcgw.ForwardResponseMessage
 
-	forward_ABitOfEverythingService_PostWithEmptyBody_0 = runtime.ForwardResponseMessage
+	forward_ABitOfEverythingService_PostWithEmptyBody_0 = grpcgw.ForwardResponseMessage
 )
 
 // RegisterCamelCaseServiceNameHandlerFromEndpoint is same as RegisterCamelCaseServiceNameHandler but
 // automatically dials to "endpoint" and closes the connection when "ctx" gets done.
-func RegisterCamelCaseServiceNameHandlerFromEndpoint(ctx context.Context, mux *runtime.ServeMux, endpoint string, opts []grpc.DialOption) (err error) {
+func RegisterCamelCaseServiceNameHandlerFromEndpoint(ctx context.Context, mux *grpcgw.ServeMux, endpoint string, opts []grpc.DialOption) (err error) {
 	conn, err := grpc.Dial(endpoint, opts...)
 	if err != nil {
 		return err
@@ -1076,7 +1075,7 @@ func RegisterCamelCaseServiceNameHandlerFromEndpoint(ctx context.Context, mux *r
 
 // RegisterCamelCaseServiceNameHandler registers the http handlers for service CamelCaseServiceName to "mux".
 // The handlers forward requests to the grpc endpoint over "conn".
-func RegisterCamelCaseServiceNameHandler(ctx context.Context, mux *runtime.ServeMux, conn *grpc.ClientConn) error {
+func RegisterCamelCaseServiceNameHandler(ctx context.Context, mux *grpcgw.ServeMux, conn *grpc.ClientConn) error {
 	return RegisterCamelCaseServiceNameHandlerClient(ctx, mux, NewCamelCaseServiceNameClient(conn))
 }
 
@@ -1085,7 +1084,7 @@ func RegisterCamelCaseServiceNameHandler(ctx context.Context, mux *runtime.Serve
 // Note: the gRPC framework executes interceptors within the gRPC handler. If the passed in "CamelCaseServiceNameClient"
 // doesn't go through the normal gRPC flow (creating a gRPC client etc.) then it will be up to the passed in
 // "CamelCaseServiceNameClient" to call the correct interceptors.
-func RegisterCamelCaseServiceNameHandlerClient(ctx context.Context, mux *runtime.ServeMux, client CamelCaseServiceNameClient) error {
+func RegisterCamelCaseServiceNameHandlerClient(ctx context.Context, mux *grpcgw.ServeMux, client CamelCaseServiceNameClient) error {
 
 	mux.Handle("GET", pattern_CamelCaseServiceName_Empty_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
@@ -1099,16 +1098,16 @@ func RegisterCamelCaseServiceNameHandlerClient(ctx context.Context, mux *runtime
 				}
 			}(ctx.Done(), cn.CloseNotify())
 		}
-		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		rctx, err := runtime.AnnotateContext(ctx, mux, req)
+		inboundMarshaler, outboundMarshaler := grpcgw.MarshalerForRequest(mux, req)
+		rctx, err := grpcgw.AnnotateContext(ctx, mux, req)
 		if err != nil {
-			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			grpcgw.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 		resp, md, err := request_CamelCaseServiceName_Empty_0(rctx, inboundMarshaler, client, req, pathParams)
-		ctx = runtime.NewServerMetadataContext(ctx, md)
+		ctx = grpcgw.NewServerMetadataContext(ctx, md)
 		if err != nil {
-			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			grpcgw.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
@@ -1120,9 +1119,9 @@ func RegisterCamelCaseServiceNameHandlerClient(ctx context.Context, mux *runtime
 }
 
 var (
-	pattern_CamelCaseServiceName_Empty_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v2", "example", "empty"}, ""))
+	pattern_CamelCaseServiceName_Empty_0 = grpcgw.MustPattern(grpcgw.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v2", "example", "empty"}, ""))
 )
 
 var (
-	forward_CamelCaseServiceName_Empty_0 = runtime.ForwardResponseMessage
+	forward_CamelCaseServiceName_Empty_0 = grpcgw.ForwardResponseMessage
 )

@@ -1,4 +1,4 @@
-package runtime
+package grpcgw
 
 import (
 	"github.com/golang/protobuf/proto"

@@ -9,7 +9,7 @@ import (
 	"time"
 
 	"github.com/golang/protobuf/jsonpb"
-	"github.com/grpc-ecosystem/grpc-gateway/runtime"
+	"github.com/grpc-ecosystem/grpc-gateway/grpcgw"
 	spb "google.golang.org/genproto/googleapis/rpc/status"
 	"google.golang.org/grpc/codes"
 )
@@ -18,7 +18,7 @@ func TestWithProtoErrorHandler(t *testing.T) {
 	go func() {
 		if err := Run(
 			":8082",
-			runtime.WithProtoErrorHandler(runtime.DefaultHTTPProtoErrorHandler),
+			grpcgw.WithProtoErrorHandler(grpcgw.DefaultHTTPProtoErrorHandler),
 		); err != nil {
 			t.Errorf("gw.Run() failed with %v; want success", err)
 			return

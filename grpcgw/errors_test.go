@@ -1,4 +1,4 @@
-package runtime_test
+package grpcgw_test
 
 import (
 	"encoding/json"
@@ -8,7 +8,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/grpc-ecosystem/grpc-gateway/runtime"
+	"github.com/grpc-ecosystem/grpc-gateway/grpcgw"
 	"golang.org/x/net/context"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -35,7 +35,7 @@ func TestDefaultHTTPError(t *testing.T) {
 	} {
 		w := httptest.NewRecorder()
 		req, _ := http.NewRequest("", "", nil) // Pass in an empty request to match the signature
-		runtime.DefaultHTTPError(ctx, &runtime.ServeMux{}, &runtime.JSONBuiltin{}, w, req, spec.err)
+		grpcgw.DefaultHTTPError(ctx, &grpcgw.ServeMux{}, &grpcgw.JSONBuiltin{}, w, req, spec.err)
 
 		if got, want := w.Header().Get("Content-Type"), "application/json"; got != want {
 			t.Errorf(`w.Header().Get("Content-Type") = %q; want %q; on spec.err=%v`, got, want, spec.err)

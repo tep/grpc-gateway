@@ -1,4 +1,4 @@
-package runtime_test
+package grpcgw_test
 
 import (
 	"io"
@@ -9,7 +9,7 @@ import (
 
 	"github.com/golang/protobuf/proto"
 	pb "github.com/grpc-ecosystem/grpc-gateway/examples/examplepb"
-	"github.com/grpc-ecosystem/grpc-gateway/runtime"
+	"github.com/grpc-ecosystem/grpc-gateway/grpcgw"
 	"golang.org/x/net/context"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
@@ -60,15 +60,15 @@ func TestForwardResponseStream(t *testing.T) {
 			return msg.pb, msg.err
 		}
 	}
-	ctx := runtime.NewServerMetadataContext(context.Background(), runtime.ServerMetadata{})
-	marshaler := &runtime.JSONPb{}
+	ctx := grpcgw.NewServerMetadataContext(context.Background(), grpcgw.ServerMetadata{})
+	marshaler := &grpcgw.JSONPb{}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			recv := newTestRecv(t, tt.msgs)
 			req := httptest.NewRequest("GET", "http://example.com/foo", nil)
 			resp := httptest.NewRecorder()
 
-			runtime.ForwardResponseStream(ctx, runtime.NewServeMux(), marshaler, resp, req, recv)
+			grpcgw.ForwardResponseStream(ctx, grpcgw.NewServeMux(), marshaler, resp, req, recv)
 
 			w := resp.Result()
 			if w.StatusCode != tt.statusCode {
@@ -103,17 +103,16 @@ func TestForwardResponseStream(t *testing.T) {
 	}
 }
 
-
 // A custom marshaler implementation, that doesn't implement the delimited interface
 type CustomMarshaler struct {
-    m *runtime.JSONPb
+	m *grpcgw.JSONPb
 }
-func (c *CustomMarshaler) Marshal(v interface{}) ([]byte, error) { return c.m.Marshal(v) }
-func (c *CustomMarshaler) Unmarshal(data []byte, v interface{}) error { return c.m.Unmarshal(data, v) }
-func (c *CustomMarshaler) NewDecoder(r io.Reader) runtime.Decoder { return c.m.NewDecoder(r) }
-func (c *CustomMarshaler) NewEncoder(w io.Writer) runtime.Encoder { return c.m.NewEncoder(w) }
-func (c *CustomMarshaler) ContentType() string { return c.m.ContentType() }
 
+func (c *CustomMarshaler) Marshal(v interface{}) ([]byte, error)      { return c.m.Marshal(v) }
+func (c *CustomMarshaler) Unmarshal(data []byte, v interface{}) error { return c.m.Unmarshal(data, v) }
+func (c *CustomMarshaler) NewDecoder(r io.Reader) grpcgw.Decoder      { return c.m.NewDecoder(r) }
+func (c *CustomMarshaler) NewEncoder(w io.Writer) grpcgw.Encoder      { return c.m.NewEncoder(w) }
+func (c *CustomMarshaler) ContentType() string                        { return c.m.ContentType() }
 
 func TestForwardResponseStreamCustomMarshaler(t *testing.T) {
 	type msg struct {
@@ -160,15 +159,15 @@ func TestForwardResponseStreamCustomMarshaler(t *testing.T) {
 			return msg.pb, msg.err
 		}
 	}
-	ctx := runtime.NewServerMetadataContext(context.Background(), runtime.ServerMetadata{})
-	marshaler := &CustomMarshaler{&runtime.JSONPb{}}
+	ctx := grpcgw.NewServerMetadataContext(context.Background(), grpcgw.ServerMetadata{})
+	marshaler := &CustomMarshaler{&grpcgw.JSONPb{}}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			recv := newTestRecv(t, tt.msgs)
 			req := httptest.NewRequest("GET", "http://example.com/foo", nil)
 			resp := httptest.NewRecorder()
 
-			runtime.ForwardResponseStream(ctx, runtime.NewServeMux(), marshaler, resp, req, recv)
+			grpcgw.ForwardResponseStream(ctx, grpcgw.NewServeMux(), marshaler, resp, req, recv)
 
 			w := resp.Result()
 			if w.StatusCode != tt.statusCode {

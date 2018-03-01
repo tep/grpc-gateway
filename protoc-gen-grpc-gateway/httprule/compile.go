@@ -1,7 +1,7 @@
 package httprule
 
 import (
-	"github.com/grpc-ecosystem/grpc-gateway/utilities"
+	"github.com/grpc-ecosystem/grpc-gateway/grpcgw"
 )
 
 const (
@@ -24,15 +24,15 @@ type Template struct {
 	Template string
 }
 
-// Compiler compiles utilities representation of path templates into marshallable operations.
-// They can be unmarshalled by runtime.NewPattern.
+// Compiler compiles grpcgw representation of path templates into marshallable operations.
+// They can be unmarshalled by grpcgw.NewPattern.
 type Compiler interface {
 	Compile() Template
 }
 
 type op struct {
 	// code is the opcode of the operation
-	code utilities.OpCode
+	code grpcgw.OpCode
 
 	// str is a string operand of the code.
 	// num is ignored if str is not empty.
@@ -44,20 +44,20 @@ type op struct {
 
 func (w wildcard) compile() []op {
 	return []op{
-		{code: utilities.OpPush},
+		{code: grpcgw.OpPush},
 	}
 }
 
 func (w deepWildcard) compile() []op {
 	return []op{
-		{code: utilities.OpPushM},
+		{code: grpcgw.OpPushM},
 	}
 }
 
 func (l literal) compile() []op {
 	return []op{
 		{
-			code: utilities.OpLitPush,
+			code: grpcgw.OpLitPush,
 			str:  string(l),
 		},
 	}
@@ -69,10 +69,10 @@ func (v variable) compile() []op {
 		ops = append(ops, s.compile()...)
 	}
 	ops = append(ops, op{
-		code: utilities.OpConcatN,
+		code: grpcgw.OpConcatN,
 		num:  len(v.segments),
 	}, op{
-		code: utilities.OpCapture,
+		code: grpcgw.OpCapture,
 		str:  v.path,
 	})
 
@@ -102,7 +102,7 @@ func (t template) Compile() Template {
 			}
 			ops = append(ops, consts[op.str])
 		}
-		if op.code == utilities.OpCapture {
+		if op.code == grpcgw.OpCapture {
 			fields = append(fields, op.str)
 		}
 	}

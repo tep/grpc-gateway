@@ -1,4 +1,4 @@
-package runtime
+package grpcgw
 
 import (
 	"fmt"
@@ -7,7 +7,7 @@ import (
 	"net/textproto"
 
 	"github.com/golang/protobuf/proto"
-	"github.com/grpc-ecosystem/grpc-gateway/runtime/internal"
+	"github.com/grpc-ecosystem/grpc-gateway/grpcgw/internal"
 	"golang.org/x/net/context"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/grpclog"
@@ -42,7 +42,7 @@ func ForwardResponseStream(ctx context.Context, mux *ServeMux, marshaler Marshal
 	if d, ok := marshaler.(Delimited); ok {
 		delimiter = d.Delimiter()
 	} else {
-	    delimiter = []byte("\n")
+		delimiter = []byte("\n")
 	}
 
 	var wroteHeader bool

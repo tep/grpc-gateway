@@ -1,4 +1,4 @@
-package runtime_test
+package grpcgw_test
 
 import (
 	"bytes"
@@ -13,11 +13,11 @@ import (
 	"github.com/golang/protobuf/ptypes/timestamp"
 	"github.com/golang/protobuf/ptypes/wrappers"
 	"github.com/grpc-ecosystem/grpc-gateway/examples/examplepb"
-	"github.com/grpc-ecosystem/grpc-gateway/runtime"
+	"github.com/grpc-ecosystem/grpc-gateway/grpcgw"
 )
 
 func TestJSONBuiltinMarshal(t *testing.T) {
-	var m runtime.JSONBuiltin
+	var m grpcgw.JSONBuiltin
 	msg := examplepb.SimpleMessage{
 		Id: "foo",
 	}
@@ -37,7 +37,7 @@ func TestJSONBuiltinMarshal(t *testing.T) {
 }
 
 func TestJSONBuiltinMarshalField(t *testing.T) {
-	var m runtime.JSONBuiltin
+	var m grpcgw.JSONBuiltin
 	for _, fixt := range builtinFieldFixtures {
 		buf, err := m.Marshal(fixt.data)
 		if err != nil {
@@ -50,7 +50,7 @@ func TestJSONBuiltinMarshalField(t *testing.T) {
 }
 
 func TestJSONBuiltinMarshalFieldKnownErrors(t *testing.T) {
-	var m runtime.JSONBuiltin
+	var m grpcgw.JSONBuiltin
 	for _, fixt := range builtinKnownErrors {
 		buf, err := m.Marshal(fixt.data)
 		if err != nil {
@@ -64,7 +64,7 @@ func TestJSONBuiltinMarshalFieldKnownErrors(t *testing.T) {
 
 func TestJSONBuiltinsnmarshal(t *testing.T) {
 	var (
-		m   runtime.JSONBuiltin
+		m   grpcgw.JSONBuiltin
 		got examplepb.SimpleMessage
 
 		data = []byte(`{"id": "foo"}`)
@@ -82,7 +82,7 @@ func TestJSONBuiltinsnmarshal(t *testing.T) {
 }
 
 func TestJSONBuiltinUnmarshalField(t *testing.T) {
-	var m runtime.JSONBuiltin
+	var m grpcgw.JSONBuiltin
 	for _, fixt := range builtinFieldFixtures {
 		dest := reflect.New(reflect.TypeOf(fixt.data))
 		if err := m.Unmarshal([]byte(fixt.json), dest.Interface()); err != nil {
@@ -96,7 +96,7 @@ func TestJSONBuiltinUnmarshalField(t *testing.T) {
 }
 
 func TestJSONBuiltinUnmarshalFieldKnownErrors(t *testing.T) {
-	var m runtime.JSONBuiltin
+	var m grpcgw.JSONBuiltin
 	for _, fixt := range builtinKnownErrors {
 		dest := reflect.New(reflect.TypeOf(fixt.data))
 		if err := m.Unmarshal([]byte(fixt.json), dest.Interface()); err == nil {
@@ -106,7 +106,7 @@ func TestJSONBuiltinUnmarshalFieldKnownErrors(t *testing.T) {
 }
 
 func TestJSONBuiltinEncoder(t *testing.T) {
-	var m runtime.JSONBuiltin
+	var m grpcgw.JSONBuiltin
 	msg := examplepb.SimpleMessage{
 		Id: "foo",
 	}
@@ -127,7 +127,7 @@ func TestJSONBuiltinEncoder(t *testing.T) {
 }
 
 func TestJSONBuiltinEncoderFields(t *testing.T) {
-	var m runtime.JSONBuiltin
+	var m grpcgw.JSONBuiltin
 	for _, fixt := range builtinFieldFixtures {
 		var buf bytes.Buffer
 		enc := m.NewEncoder(&buf)
@@ -143,7 +143,7 @@ func TestJSONBuiltinEncoderFields(t *testing.T) {
 
 func TestJSONBuiltinDecoder(t *testing.T) {
 	var (
-		m   runtime.JSONBuiltin
+		m   grpcgw.JSONBuiltin
 		got examplepb.SimpleMessage
 
 		data = `{"id": "foo"}`
@@ -163,7 +163,7 @@ func TestJSONBuiltinDecoder(t *testing.T) {
 }
 
 func TestJSONBuiltinDecoderFields(t *testing.T) {
-	var m runtime.JSONBuiltin
+	var m grpcgw.JSONBuiltin
 	for _, fixt := range builtinFieldFixtures {
 		r := strings.NewReader(fixt.json)
 		dec := m.NewDecoder(r)

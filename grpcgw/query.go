@@ -1,4 +1,4 @@
-package runtime
+package grpcgw
 
 import (
 	"encoding/base64"
@@ -11,13 +11,12 @@ import (
 	"time"
 
 	"github.com/golang/protobuf/proto"
-	"github.com/grpc-ecosystem/grpc-gateway/utilities"
 	"google.golang.org/grpc/grpclog"
 )
 
 // PopulateQueryParameters populates "values" into "msg".
 // A value is ignored if its key starts with one of the elements in "filter".
-func PopulateQueryParameters(msg proto.Message, values url.Values, filter *utilities.DoubleArray) error {
+func PopulateQueryParameters(msg proto.Message, values url.Values, filter *DoubleArray) error {
 	for key, values := range values {
 		re, err := regexp.Compile("^(.*)\\[(.*)\\]$")
 		if err != nil {

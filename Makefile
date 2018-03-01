@@ -7,19 +7,13 @@ PKG=github.com/grpc-ecosystem/grpc-gateway
 GO_PLUGIN=bin/protoc-gen-go
 GO_PLUGIN_PKG=github.com/golang/protobuf/protoc-gen-go
 SWAGGER_PLUGIN=bin/protoc-gen-swagger
-SWAGGER_PLUGIN_SRC= utilities/doc.go \
-		    utilities/pattern.go \
-		    utilities/trie.go \
-		    protoc-gen-swagger/genswagger/generator.go \
+SWAGGER_PLUGIN_SRC= protoc-gen-swagger/genswagger/generator.go \
 		    protoc-gen-swagger/genswagger/template.go \
 		    protoc-gen-swagger/main.go
 SWAGGER_PLUGIN_PKG=$(PKG)/protoc-gen-swagger
 GATEWAY_PLUGIN=bin/protoc-gen-grpc-gateway
 GATEWAY_PLUGIN_PKG=$(PKG)/protoc-gen-grpc-gateway
-GATEWAY_PLUGIN_SRC= utilities/doc.go \
-		    utilities/pattern.go \
-		    utilities/trie.go \
-		    protoc-gen-grpc-gateway \
+GATEWAY_PLUGIN_SRC= protoc-gen-grpc-gateway \
 		    protoc-gen-grpc-gateway/descriptor \
 		    protoc-gen-grpc-gateway/descriptor/registry.go \
 		    protoc-gen-grpc-gateway/descriptor/services.go \
@@ -40,7 +34,7 @@ GATEWAY_PLUGIN_FLAGS?=
 GOOGLEAPIS_DIR=third_party/googleapis
 OUTPUT_DIR=_output
 
-RUNTIME_PROTO=runtime/internal/stream_chunk.proto
+RUNTIME_PROTO=grpcgw/internal/stream_chunk.proto
 RUNTIME_GO=$(RUNTIME_PROTO:.proto=.pb.go)
 
 OPENAPIV2_PROTO=protoc-gen-swagger/options/openapiv2.proto protoc-gen-swagger/options/annotations.proto
@@ -82,6 +76,8 @@ SWAGGER_CODEGEN=swagger-codegen
 
 PROTOC_INC_PATH=$(dir $(shell which protoc))/../include
 
+GOPATHx=$(shell echo "${GOPATH}" | sed -re 's/:.*$$//')
+
 generate: $(RUNTIME_GO)
 
 .SUFFIXES: .go .proto
@@ -94,7 +90,7 @@ $(RUNTIME_GO): $(RUNTIME_PROTO) $(GO_PLUGIN)
 	protoc -I $(PROTOC_INC_PATH) --plugin=$(GO_PLUGIN) -I. --go_out=$(PKGMAP):. $(RUNTIME_PROTO)
 
 $(OPENAPIV2_GO): $(OPENAPIV2_PROTO) $(GO_PLUGIN)
-	protoc -I $(PROTOC_INC_PATH) --plugin=$(GO_PLUGIN) -I. --go_out=$(PKGMAP):$(GOPATH)/src $(OPENAPIV2_PROTO)
+	protoc -I $(PROTOC_INC_PATH) --plugin=$(GO_PLUGIN) -I. --go_out=$(PKGMAP):$(GOPATHx)/src $(OPENAPIV2_PROTO)
 
 $(GATEWAY_PLUGIN): $(RUNTIME_GO) $(GATEWAY_PLUGIN_SRC)
 	go build -o $@ $(GATEWAY_PLUGIN_PKG)
@@ -131,12 +127,10 @@ test: examples
 	go test -race $(PKG)/...
 
 lint:
-	golint --set_exit_status $(PKG)/runtime
-	golint --set_exit_status $(PKG)/utilities/...
+	golint --set_exit_status $(PKG)/grpcgw
 	golint --set_exit_status $(PKG)/protoc-gen-grpc-gateway/...
 	golint --set_exit_status $(PKG)/protoc-gen-swagger/...
-	go vet $(PKG)/runtime || true
-	go vet $(PKG)/utilities/...
+	go vet $(PKG)/grpcgw || true
 	go vet $(PKG)/protoc-gen-grpc-gateway/...
 	go vet $(PKG)/protoc-gen-swagger/...
 

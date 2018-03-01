@@ -1,4 +1,4 @@
-package utilities
+package grpcgw
 
 // An OpCode is a opcode of compiled path patterns.
 type OpCode int

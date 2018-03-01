@@ -1,4 +1,4 @@
-package runtime_test
+package grpcgw_test
 
 import (
 	"bytes"
@@ -7,8 +7,7 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/grpc-ecosystem/grpc-gateway/runtime"
-	"github.com/grpc-ecosystem/grpc-gateway/utilities"
+	"github.com/grpc-ecosystem/grpc-gateway/grpcgw"
 )
 
 func TestMuxServeHTTP(t *testing.T) {
@@ -38,7 +37,7 @@ func TestMuxServeHTTP(t *testing.T) {
 			patterns: []stubPattern{
 				{
 					method: "GET",
-					ops:    []int{int(utilities.OpLitPush), 0},
+					ops:    []int{int(grpcgw.OpLitPush), 0},
 					pool:   []string{"foo"},
 				},
 			},
@@ -51,7 +50,7 @@ func TestMuxServeHTTP(t *testing.T) {
 			patterns: []stubPattern{
 				{
 					method: "GET",
-					ops:    []int{int(utilities.OpLitPush), 0},
+					ops:    []int{int(grpcgw.OpLitPush), 0},
 					pool:   []string{"foo"},
 				},
 			},
@@ -63,12 +62,12 @@ func TestMuxServeHTTP(t *testing.T) {
 			patterns: []stubPattern{
 				{
 					method: "GET",
-					ops:    []int{int(utilities.OpLitPush), 0},
+					ops:    []int{int(grpcgw.OpLitPush), 0},
 					pool:   []string{"foo"},
 				},
 				{
 					method: "GET",
-					ops:    []int{int(utilities.OpPush), 0},
+					ops:    []int{int(grpcgw.OpPush), 0},
 				},
 			},
 			reqMethod:   "GET",
@@ -80,12 +79,12 @@ func TestMuxServeHTTP(t *testing.T) {
 			patterns: []stubPattern{
 				{
 					method: "GET",
-					ops:    []int{int(utilities.OpLitPush), 0},
+					ops:    []int{int(grpcgw.OpLitPush), 0},
 					pool:   []string{"foo"},
 				},
 				{
 					method: "POST",
-					ops:    []int{int(utilities.OpLitPush), 0},
+					ops:    []int{int(grpcgw.OpLitPush), 0},
 					pool:   []string{"foo"},
 				},
 			},
@@ -98,7 +97,7 @@ func TestMuxServeHTTP(t *testing.T) {
 			patterns: []stubPattern{
 				{
 					method: "GET",
-					ops:    []int{int(utilities.OpLitPush), 0},
+					ops:    []int{int(grpcgw.OpLitPush), 0},
 					pool:   []string{"foo"},
 				},
 			},
@@ -110,7 +109,7 @@ func TestMuxServeHTTP(t *testing.T) {
 			patterns: []stubPattern{
 				{
 					method: "GET",
-					ops:    []int{int(utilities.OpLitPush), 0},
+					ops:    []int{int(grpcgw.OpLitPush), 0},
 					pool:   []string{"foo"},
 				},
 			},
@@ -126,12 +125,12 @@ func TestMuxServeHTTP(t *testing.T) {
 			patterns: []stubPattern{
 				{
 					method: "GET",
-					ops:    []int{int(utilities.OpLitPush), 0},
+					ops:    []int{int(grpcgw.OpLitPush), 0},
 					pool:   []string{"foo"},
 				},
 				{
 					method: "POST",
-					ops:    []int{int(utilities.OpLitPush), 0},
+					ops:    []int{int(grpcgw.OpLitPush), 0},
 					pool:   []string{"foo"},
 				},
 			},
@@ -148,7 +147,7 @@ func TestMuxServeHTTP(t *testing.T) {
 			patterns: []stubPattern{
 				{
 					method: "GET",
-					ops:    []int{int(utilities.OpLitPush), 0},
+					ops:    []int{int(grpcgw.OpLitPush), 0},
 					pool:   []string{"foo"},
 				},
 			},
@@ -163,7 +162,7 @@ func TestMuxServeHTTP(t *testing.T) {
 			patterns: []stubPattern{
 				{
 					method: "POST",
-					ops:    []int{int(utilities.OpLitPush), 0},
+					ops:    []int{int(grpcgw.OpLitPush), 0},
 					pool:   []string{"foo"},
 					verb:   "bar",
 				},
@@ -177,12 +176,12 @@ func TestMuxServeHTTP(t *testing.T) {
 			respContent: "POST /foo:bar",
 		},
 	} {
-		mux := runtime.NewServeMux()
+		mux := grpcgw.NewServeMux()
 		for _, p := range spec.patterns {
 			func(p stubPattern) {
-				pat, err := runtime.NewPattern(1, p.ops, p.pool, p.verb)
+				pat, err := grpcgw.NewPattern(1, p.ops, p.pool, p.verb)
 				if err != nil {
-					t.Fatalf("runtime.NewPattern(1, %#v, %#v, %q) failed with %v; want success", p.ops, p.pool, p.verb, err)
+					t.Fatalf("grpcgw.NewPattern(1, %#v, %#v, %q) failed with %v; want success", p.ops, p.pool, p.verb, err)
 				}
 				mux.Handle(p.method, pat, func(w http.ResponseWriter, r *http.Request, pathParams map[string]string) {
 					fmt.Fprintf(w, "%s %s", p.method, pat.String())

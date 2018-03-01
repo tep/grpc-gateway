@@ -19,7 +19,7 @@ import (
 	"github.com/golang/protobuf/ptypes/empty"
 	gw "github.com/grpc-ecosystem/grpc-gateway/examples/examplepb"
 	sub "github.com/grpc-ecosystem/grpc-gateway/examples/sub"
-	"github.com/grpc-ecosystem/grpc-gateway/runtime"
+	"github.com/grpc-ecosystem/grpc-gateway/grpcgw"
 	"golang.org/x/net/context"
 	"google.golang.org/grpc/codes"
 )
@@ -44,7 +44,7 @@ func TestForwardResponseOption(t *testing.T) {
 	go func() {
 		if err := Run(
 			":8081",
-			runtime.WithForwardResponseOption(
+			grpcgw.WithForwardResponseOption(
 				func(_ context.Context, w http.ResponseWriter, _ proto.Message) error {
 					w.Header().Set("Content-Type", "application/vnd.docker.plugins.v1.1+json")
 					return nil

@@ -1,4 +1,4 @@
-package runtime_test
+package grpcgw_test
 
 import (
 	"errors"
@@ -12,8 +12,7 @@ import (
 	"github.com/golang/protobuf/ptypes"
 	"github.com/golang/protobuf/ptypes/timestamp"
 	"github.com/golang/protobuf/ptypes/wrappers"
-	"github.com/grpc-ecosystem/grpc-gateway/runtime"
-	"github.com/grpc-ecosystem/grpc-gateway/utilities"
+	"github.com/grpc-ecosystem/grpc-gateway/grpcgw"
 	"google.golang.org/genproto/protobuf/field_mask"
 )
 
@@ -30,7 +29,7 @@ func TestPopulateParameters(t *testing.T) {
 
 	for _, spec := range []struct {
 		values  url.Values
-		filter  *utilities.DoubleArray
+		filter  *grpcgw.DoubleArray
 		want    proto.Message
 		wanterr error
 	}{
@@ -79,7 +78,7 @@ func TestPopulateParameters(t *testing.T) {
 				"map_value14[key]":       {"true"},
 				"map_value15[true]":      {"value"},
 			},
-			filter: utilities.NewDoubleArray(nil),
+			filter: grpcgw.NewDoubleArray(nil),
 			want: &proto3Message{
 				FloatValue:         1.5,
 				DoubleValue:        2.5,
@@ -153,7 +152,7 @@ func TestPopulateParameters(t *testing.T) {
 				"wrapperStringValue": {"str"},
 				"wrapperBytesValue":  {"Ynl0ZXM"},
 			},
-			filter: utilities.NewDoubleArray(nil),
+			filter: grpcgw.NewDoubleArray(nil),
 			want: &proto3Message{
 				FloatValue:         1.5,
 				DoubleValue:        2.5,
@@ -185,7 +184,7 @@ func TestPopulateParameters(t *testing.T) {
 				"enum_value":    {"EnumValue_Z"},
 				"repeated_enum": {"EnumValue_X", "2", "0"},
 			},
-			filter: utilities.NewDoubleArray(nil),
+			filter: grpcgw.NewDoubleArray(nil),
 			want: &proto3Message{
 				EnumValue:    EnumValue_Z,
 				RepeatedEnum: []EnumValue{EnumValue_X, EnumValue_Z, EnumValue_X},
@@ -205,7 +204,7 @@ func TestPopulateParameters(t *testing.T) {
 				"enum_value":     {"1"},
 				"repeated_enum":  {"1", "2", "0"},
 			},
-			filter: utilities.NewDoubleArray(nil),
+			filter: grpcgw.NewDoubleArray(nil),
 			want: &proto2Message{
 				FloatValue:    proto.Float32(1.5),
 				DoubleValue:   proto.Float64(2.5),
@@ -234,7 +233,7 @@ func TestPopulateParameters(t *testing.T) {
 				"enumValue":     {"1"},
 				"repeatedEnum":  {"1", "2", "0"},
 			},
-			filter: utilities.NewDoubleArray(nil),
+			filter: grpcgw.NewDoubleArray(nil),
 			want: &proto2Message{
 				FloatValue:    proto.Float32(1.5),
 				DoubleValue:   proto.Float64(2.5),
@@ -259,7 +258,7 @@ func TestPopulateParameters(t *testing.T) {
 				"nested.nested.map_value[first]":      {"foo"},
 				"nested.nested.map_value[second]":     {"bar"},
 			},
-			filter: utilities.NewDoubleArray(nil),
+			filter: grpcgw.NewDoubleArray(nil),
 			want: &proto3Message{
 				Nested: &proto2Message{
 					Nested: &proto3Message{
@@ -284,7 +283,7 @@ func TestPopulateParameters(t *testing.T) {
 			values: url.Values{
 				"uint64_value": {"1", "2", "3", "4", "5"},
 			},
-			filter: utilities.NewDoubleArray(nil),
+			filter: grpcgw.NewDoubleArray(nil),
 			want: &proto3Message{
 				Uint64Value: 1,
 			},
@@ -293,7 +292,7 @@ func TestPopulateParameters(t *testing.T) {
 			values: url.Values{
 				"oneof_string_value": {"foobar"},
 			},
-			filter: utilities.NewDoubleArray(nil),
+			filter: grpcgw.NewDoubleArray(nil),
 			want: &proto3Message{
 				OneofValue: &proto3Message_OneofStringValue{"foobar"},
 			},
@@ -302,7 +301,7 @@ func TestPopulateParameters(t *testing.T) {
 			values: url.Values{
 				"oneof_bool_value": {"true"},
 			},
-			filter: utilities.NewDoubleArray(nil),
+			filter: grpcgw.NewDoubleArray(nil),
 			want: &proto3Message{
 				OneofValue: &proto3Message_OneofBoolValue{true},
 			},
@@ -313,27 +312,27 @@ func TestPopulateParameters(t *testing.T) {
 				"oneof_bool_value":   {"true"},
 				"oneof_string_value": {"foobar"},
 			},
-			filter:  utilities.NewDoubleArray(nil),
+			filter:  grpcgw.NewDoubleArray(nil),
 			want:    &proto3Message{},
 			wanterr: errors.New("field already set for oneof_value oneof"),
 		},
 	} {
 		msg := proto.Clone(spec.want)
 		msg.Reset()
-		err := runtime.PopulateQueryParameters(msg, spec.values, spec.filter)
+		err := grpcgw.PopulateQueryParameters(msg, spec.values, spec.filter)
 		if spec.wanterr != nil {
 			if !reflect.DeepEqual(err, spec.wanterr) {
-				t.Errorf("runtime.PopulateQueryParameters(msg, %v, %v) failed with %v; want error %v", spec.values, spec.filter, err, spec.wanterr)
+				t.Errorf("grpcgw.PopulateQueryParameters(msg, %v, %v) failed with %v; want error %v", spec.values, spec.filter, err, spec.wanterr)
 			}
 			continue
 		}
 
 		if err != nil {
-			t.Errorf("runtime.PopulateQueryParameters(msg, %v, %v) failed with %v; want success", spec.values, spec.filter, err)
+			t.Errorf("grpcgw.PopulateQueryParameters(msg, %v, %v) failed with %v; want success", spec.values, spec.filter, err)
 			continue
 		}
 		if got, want := msg, spec.want; !proto.Equal(got, want) {
-			t.Errorf("runtime.PopulateQueryParameters(msg, %v, %v = %v; want %v", spec.values, spec.filter, got, want)
+			t.Errorf("grpcgw.PopulateQueryParameters(msg, %v, %v = %v; want %v", spec.values, spec.filter, got, want)
 		}
 	}
 }
@@ -341,7 +340,7 @@ func TestPopulateParameters(t *testing.T) {
 func TestPopulateParametersWithFilters(t *testing.T) {
 	for _, spec := range []struct {
 		values url.Values
-		filter *utilities.DoubleArray
+		filter *grpcgw.DoubleArray
 		want   proto.Message
 	}{
 		{
@@ -350,7 +349,7 @@ func TestPopulateParametersWithFilters(t *testing.T) {
 				"string_value":   {"str"},
 				"repeated_value": {"a", "b", "c"},
 			},
-			filter: utilities.NewDoubleArray([][]string{
+			filter: grpcgw.NewDoubleArray([][]string{
 				{"bool_value"}, {"repeated_value"},
 			}),
 			want: &proto3Message{
@@ -364,7 +363,7 @@ func TestPopulateParametersWithFilters(t *testing.T) {
 				"nested.string_value":        {"str"},
 				"string_value":               {"str"},
 			},
-			filter: utilities.NewDoubleArray([][]string{
+			filter: grpcgw.NewDoubleArray([][]string{
 				{"nested"},
 			}),
 			want: &proto3Message{
@@ -378,7 +377,7 @@ func TestPopulateParametersWithFilters(t *testing.T) {
 				"nested.string_value":        {"str"},
 				"string_value":               {"str"},
 			},
-			filter: utilities.NewDoubleArray([][]string{
+			filter: grpcgw.NewDoubleArray([][]string{
 				{"nested", "nested"},
 			}),
 			want: &proto3Message{
@@ -395,7 +394,7 @@ func TestPopulateParametersWithFilters(t *testing.T) {
 				"nested.string_value":        {"str"},
 				"string_value":               {"str"},
 			},
-			filter: utilities.NewDoubleArray([][]string{
+			filter: grpcgw.NewDoubleArray([][]string{
 				{"nested", "nested", "string_value"},
 			}),
 			want: &proto3Message{
@@ -411,13 +410,13 @@ func TestPopulateParametersWithFilters(t *testing.T) {
 	} {
 		msg := proto.Clone(spec.want)
 		msg.Reset()
-		err := runtime.PopulateQueryParameters(msg, spec.values, spec.filter)
+		err := grpcgw.PopulateQueryParameters(msg, spec.values, spec.filter)
 		if err != nil {
-			t.Errorf("runtime.PoplateQueryParameters(msg, %v, %v) failed with %v; want success", spec.values, spec.filter, err)
+			t.Errorf("grpcgw.PoplateQueryParameters(msg, %v, %v) failed with %v; want success", spec.values, spec.filter, err)
 			continue
 		}
 		if got, want := msg, spec.want; !proto.Equal(got, want) {
-			t.Errorf("runtime.PopulateQueryParameters(msg, %v, %v = %v; want %v", spec.values, spec.filter, got, want)
+			t.Errorf("grpcgw.PopulateQueryParameters(msg, %v, %v = %v; want %v", spec.values, spec.filter, got, want)
 		}
 	}
 }
@@ -426,97 +425,97 @@ func TestPopulateQueryParametersWithInvalidNestedParameters(t *testing.T) {
 	for _, spec := range []struct {
 		msg    proto.Message
 		values url.Values
-		filter *utilities.DoubleArray
+		filter *grpcgw.DoubleArray
 	}{
 		{
 			msg: &proto3Message{},
 			values: url.Values{
 				"float_value.nested": {"test"},
 			},
-			filter: utilities.NewDoubleArray(nil),
+			filter: grpcgw.NewDoubleArray(nil),
 		},
 		{
 			msg: &proto3Message{},
 			values: url.Values{
 				"double_value.nested": {"test"},
 			},
-			filter: utilities.NewDoubleArray(nil),
+			filter: grpcgw.NewDoubleArray(nil),
 		},
 		{
 			msg: &proto3Message{},
 			values: url.Values{
 				"int64_value.nested": {"test"},
 			},
-			filter: utilities.NewDoubleArray(nil),
+			filter: grpcgw.NewDoubleArray(nil),
 		},
 		{
 			msg: &proto3Message{},
 			values: url.Values{
 				"int32_value.nested": {"test"},
 			},
-			filter: utilities.NewDoubleArray(nil),
+			filter: grpcgw.NewDoubleArray(nil),
 		},
 		{
 			msg: &proto3Message{},
 			values: url.Values{
 				"uint64_value.nested": {"test"},
 			},
-			filter: utilities.NewDoubleArray(nil),
+			filter: grpcgw.NewDoubleArray(nil),
 		},
 		{
 			msg: &proto3Message{},
 			values: url.Values{
 				"uint32_value.nested": {"test"},
 			},
-			filter: utilities.NewDoubleArray(nil),
+			filter: grpcgw.NewDoubleArray(nil),
 		},
 		{
 			msg: &proto3Message{},
 			values: url.Values{
 				"bool_value.nested": {"test"},
 			},
-			filter: utilities.NewDoubleArray(nil),
+			filter: grpcgw.NewDoubleArray(nil),
 		},
 		{
 			msg: &proto3Message{},
 			values: url.Values{
 				"string_value.nested": {"test"},
 			},
-			filter: utilities.NewDoubleArray(nil),
+			filter: grpcgw.NewDoubleArray(nil),
 		},
 		{
 			msg: &proto3Message{},
 			values: url.Values{
 				"repeated_value.nested": {"test"},
 			},
-			filter: utilities.NewDoubleArray(nil),
+			filter: grpcgw.NewDoubleArray(nil),
 		},
 		{
 			msg: &proto3Message{},
 			values: url.Values{
 				"enum_value.nested": {"test"},
 			},
-			filter: utilities.NewDoubleArray(nil),
+			filter: grpcgw.NewDoubleArray(nil),
 		},
 		{
 			msg: &proto3Message{},
 			values: url.Values{
 				"enum_value.nested": {"test"},
 			},
-			filter: utilities.NewDoubleArray(nil),
+			filter: grpcgw.NewDoubleArray(nil),
 		},
 		{
 			msg: &proto3Message{},
 			values: url.Values{
 				"repeated_enum.nested": {"test"},
 			},
-			filter: utilities.NewDoubleArray(nil),
+			filter: grpcgw.NewDoubleArray(nil),
 		},
 	} {
 		spec.msg.Reset()
-		err := runtime.PopulateQueryParameters(spec.msg, spec.values, spec.filter)
+		err := grpcgw.PopulateQueryParameters(spec.msg, spec.values, spec.filter)
 		if err == nil {
-			t.Errorf("runtime.PopulateQueryParameters(msg, %v, %v) did not fail; want error", spec.values, spec.filter)
+			t.Errorf("grpcgw.PopulateQueryParameters(msg, %v, %v) did not fail; want error", spec.values, spec.filter)
 		}
 	}
 }
@@ -534,8 +533,8 @@ type proto3Message struct {
 	StringValue        string                   `protobuf:"bytes,9,opt,name=string_value,json=stringValue" json:"string_value,omitempty"`
 	BytesValue         []byte                   `protobuf:"bytes,25,opt,name=bytes_value,json=bytesValue" json:"bytes_value,omitempty"`
 	RepeatedValue      []string                 `protobuf:"bytes,10,rep,name=repeated_value,json=repeatedValue" json:"repeated_value,omitempty"`
-	EnumValue          EnumValue                `protobuf:"varint,11,opt,name=enum_value,json=enumValue,enum=runtime_test_api.EnumValue" json:"enum_value,omitempty"`
-	RepeatedEnum       []EnumValue              `protobuf:"varint,12,rep,packed,name=repeated_enum,json=repeatedEnum,enum=runtime_test_api.EnumValue" json:"repeated_enum,omitempty"`
+	EnumValue          EnumValue                `protobuf:"varint,11,opt,name=enum_value,json=enumValue,enum=grpcgw_test_api.EnumValue" json:"enum_value,omitempty"`
+	RepeatedEnum       []EnumValue              `protobuf:"varint,12,rep,packed,name=repeated_enum,json=repeatedEnum,enum=grpcgw_test_api.EnumValue" json:"repeated_enum,omitempty"`
 	TimestampValue     *timestamp.Timestamp     `protobuf:"bytes,16,opt,name=timestamp_value,json=timestampValue" json:"timestamp_value,omitempty"`
 	FieldMaskValue     *field_mask.FieldMask    `protobuf:"bytes,27,opt,name=fieldmask_value,json=fieldmaskValue" json:"fieldmask_value,omitempty"`
 	OneofValue         proto3Message_OneofValue `protobuf_oneof:"oneof_value"`
@@ -691,8 +690,8 @@ type proto2Message struct {
 	BoolValue        *bool          `protobuf:"varint,8,opt,name=bool_value,json=boolValue" json:"bool_value,omitempty"`
 	StringValue      *string        `protobuf:"bytes,9,opt,name=string_value,json=stringValue" json:"string_value,omitempty"`
 	RepeatedValue    []string       `protobuf:"bytes,10,rep,name=repeated_value,json=repeatedValue" json:"repeated_value,omitempty"`
-	EnumValue        EnumValue      `protobuf:"varint,11,opt,name=enum_value,json=enumValue,enum=runtime_test_api.EnumValue" json:"enum_value,omitempty"`
-	RepeatedEnum     []EnumValue    `protobuf:"varint,12,rep,packed,name=repeated_enum,json=repeatedEnum,enum=runtime_test_api.EnumValue" json:"repeated_enum,omitempty"`
+	EnumValue        EnumValue      `protobuf:"varint,11,opt,name=enum_value,json=enumValue,enum=grpcgw_test_api.EnumValue" json:"enum_value,omitempty"`
+	RepeatedEnum     []EnumValue    `protobuf:"varint,12,rep,packed,name=repeated_enum,json=repeatedEnum,enum=grpcgw_test_api.EnumValue" json:"repeated_enum,omitempty"`
 	XXX_unrecognized []byte         `json:"-"`
 }
 
@@ -790,5 +789,5 @@ var EnumValue_value = map[string]int32{
 }
 
 func init() {
-	proto.RegisterEnum("runtime_test_api.EnumValue", EnumValue_name, EnumValue_value)
+	proto.RegisterEnum("grpcgw_test_api.EnumValue", EnumValue_name, EnumValue_value)
 }

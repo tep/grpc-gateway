@@ -1,4 +1,4 @@
-package runtime_test
+package grpcgw_test
 
 import (
 	"reflect"
@@ -7,7 +7,7 @@ import (
 	"bytes"
 	"github.com/golang/protobuf/ptypes/timestamp"
 	"github.com/grpc-ecosystem/grpc-gateway/examples/examplepb"
-	"github.com/grpc-ecosystem/grpc-gateway/runtime"
+	"github.com/grpc-ecosystem/grpc-gateway/grpcgw"
 )
 
 var message = &examplepb.ABitOfEverything{
@@ -15,7 +15,7 @@ var message = &examplepb.ABitOfEverything{
 	RepeatedStringValue: nil,
 	MappedStringValue:   nil,
 	MappedNestedValue:   nil,
-    RepeatedEnumValue:   nil,
+	RepeatedEnumValue:   nil,
 	TimestampValue:      &timestamp.Timestamp{},
 	Uuid:                "6EC2446F-7E89-4127-B3E6-5C05E6BECBA7",
 	Nested: []*examplepb.ABitOfEverything_Nested{
@@ -25,18 +25,18 @@ var message = &examplepb.ABitOfEverything{
 		},
 	},
 	Uint64Value: 0xFFFFFFFFFFFFFFFF,
-    EnumValue:   examplepb.NumericEnum_ONE,
+	EnumValue:   examplepb.NumericEnum_ONE,
 	OneofValue: &examplepb.ABitOfEverything_OneofString{
 		OneofString: "bar",
 	},
-    MapValue: map[string]examplepb.NumericEnum{
+	MapValue: map[string]examplepb.NumericEnum{
 		"a": examplepb.NumericEnum_ONE,
 		"b": examplepb.NumericEnum_ZERO,
 	},
 }
 
 func TestProtoMarshalUnmarshal(t *testing.T) {
-	marshaller := runtime.ProtoMarshaller{}
+	marshaller := grpcgw.ProtoMarshaller{}
 
 	// Marshal
 	buffer, err := marshaller.Marshal(message)
@@ -61,7 +61,7 @@ func TestProtoMarshalUnmarshal(t *testing.T) {
 }
 
 func TestProtoEncoderDecodert(t *testing.T) {
-	marshaller := runtime.ProtoMarshaller{}
+	marshaller := grpcgw.ProtoMarshaller{}
 
 	var buf bytes.Buffer
 

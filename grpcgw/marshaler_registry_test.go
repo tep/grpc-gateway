@@ -1,4 +1,4 @@
-package runtime_test
+package grpcgw_test
 
 import (
 	"errors"
@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"testing"
 
-	"github.com/grpc-ecosystem/grpc-gateway/runtime"
+	"github.com/grpc-ecosystem/grpc-gateway/grpcgw"
 )
 
 func TestMarshalerForRequest(t *testing.T) {
@@ -17,47 +17,47 @@ func TestMarshalerForRequest(t *testing.T) {
 	r.Header.Set("Accept", "application/x-out")
 	r.Header.Set("Content-Type", "application/x-in")
 
-	mux := runtime.NewServeMux()
+	mux := grpcgw.NewServeMux()
 
-	in, out := runtime.MarshalerForRequest(mux, r)
-	if _, ok := in.(*runtime.JSONPb); !ok {
-		t.Errorf("in = %#v; want a runtime.JSONPb", in)
+	in, out := grpcgw.MarshalerForRequest(mux, r)
+	if _, ok := in.(*grpcgw.JSONPb); !ok {
+		t.Errorf("in = %#v; want a grpcgw.JSONPb", in)
 	}
-	if _, ok := out.(*runtime.JSONPb); !ok {
-		t.Errorf("out = %#v; want a runtime.JSONPb", in)
+	if _, ok := out.(*grpcgw.JSONPb); !ok {
+		t.Errorf("out = %#v; want a grpcgw.JSONPb", in)
 	}
 
 	var marshalers [3]dummyMarshaler
 	specs := []struct {
-		opt runtime.ServeMuxOption
+		opt grpcgw.ServeMuxOption
 
-		wantIn  runtime.Marshaler
-		wantOut runtime.Marshaler
+		wantIn  grpcgw.Marshaler
+		wantOut grpcgw.Marshaler
 	}{
 		{
-			opt:     runtime.WithMarshalerOption(runtime.MIMEWildcard, &marshalers[0]),
+			opt:     grpcgw.WithMarshalerOption(grpcgw.MIMEWildcard, &marshalers[0]),
 			wantIn:  &marshalers[0],
 			wantOut: &marshalers[0],
 		},
 		{
-			opt:     runtime.WithMarshalerOption("application/x-in", &marshalers[1]),
+			opt:     grpcgw.WithMarshalerOption("application/x-in", &marshalers[1]),
 			wantIn:  &marshalers[1],
 			wantOut: &marshalers[0],
 		},
 		{
-			opt:     runtime.WithMarshalerOption("application/x-out", &marshalers[2]),
+			opt:     grpcgw.WithMarshalerOption("application/x-out", &marshalers[2]),
 			wantIn:  &marshalers[1],
 			wantOut: &marshalers[2],
 		},
 	}
 	for i, spec := range specs {
-		var opts []runtime.ServeMuxOption
+		var opts []grpcgw.ServeMuxOption
 		for _, s := range specs[:i+1] {
 			opts = append(opts, s.opt)
 		}
-		mux = runtime.NewServeMux(opts...)
+		mux = grpcgw.NewServeMux(opts...)
 
-		in, out = runtime.MarshalerForRequest(mux, r)
+		in, out = grpcgw.MarshalerForRequest(mux, r)
 		if got, want := in, spec.wantIn; got != want {
 			t.Errorf("in = %#v; want %#v", got, want)
 		}
@@ -67,7 +67,7 @@ func TestMarshalerForRequest(t *testing.T) {
 	}
 
 	r.Header.Set("Content-Type", "application/x-another")
-	in, out = runtime.MarshalerForRequest(mux, r)
+	in, out = grpcgw.MarshalerForRequest(mux, r)
 	if got, want := in, &marshalers[1]; got != want {
 		t.Errorf("in = %#v; want %#v", got, want)
 	}
@@ -87,10 +87,10 @@ func (dummyMarshaler) Unmarshal([]byte, interface{}) error {
 	return errors.New("not implemented")
 }
 
-func (dummyMarshaler) NewDecoder(r io.Reader) runtime.Decoder {
+func (dummyMarshaler) NewDecoder(r io.Reader) grpcgw.Decoder {
 	return dummyDecoder{}
 }
-func (dummyMarshaler) NewEncoder(w io.Writer) runtime.Encoder {
+func (dummyMarshaler) NewEncoder(w io.Writer) grpcgw.Encoder {
 	return dummyEncoder{}
 }
 

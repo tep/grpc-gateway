@@ -1,11 +1,10 @@
-package runtime
+package grpcgw
 
 import (
 	"errors"
 	"fmt"
 	"strings"
 
-	"github.com/grpc-ecosystem/grpc-gateway/utilities"
 	"google.golang.org/grpc/grpclog"
 )
 
@@ -17,7 +16,7 @@ var (
 )
 
 type op struct {
-	code    utilities.OpCode
+	code    OpCode
 	operand int
 }
 
@@ -62,23 +61,23 @@ func NewPattern(version int, ops []int, pool []string, verb string) (Pattern, er
 		vars            []string
 	)
 	for i := 0; i < l; i += 2 {
-		op := op{code: utilities.OpCode(ops[i]), operand: ops[i+1]}
+		op := op{code: OpCode(ops[i]), operand: ops[i+1]}
 		switch op.code {
-		case utilities.OpNop:
+		case OpNop:
 			continue
-		case utilities.OpPush:
+		case OpPush:
 			if pushMSeen {
 				tailLen++
 			}
 			stack++
-		case utilities.OpPushM:
+		case OpPushM:
 			if pushMSeen {
 				grpclog.Printf("pushM appears twice")
 				return Pattern{}, ErrInvalidPattern
 			}
 			pushMSeen = true
 			stack++
-		case utilities.OpLitPush:
+		case OpLitPush:
 			if op.operand < 0 || len(pool) <= op.operand {
 				grpclog.Printf("negative literal index: %d", op.operand)
 				return Pattern{}, ErrInvalidPattern
@@ -87,7 +86,7 @@ func NewPattern(version int, ops []int, pool []string, verb string) (Pattern, er
 				tailLen++
 			}
 			stack++
-		case utilities.OpConcatN:
+		case OpConcatN:
 			if op.operand <= 0 {
 				grpclog.Printf("negative concat size: %d", op.operand)
 				return Pattern{}, ErrInvalidPattern
@@ -98,7 +97,7 @@ func NewPattern(version int, ops []int, pool []string, verb string) (Pattern, er
 				return Pattern{}, ErrInvalidPattern
 			}
 			stack++
-		case utilities.OpCapture:
+		case OpCapture:
 			if op.operand < 0 || len(pool) <= op.operand {
 				grpclog.Printf("variable name index out of bound: %d", op.operand)
 				return Pattern{}, ErrInvalidPattern
@@ -153,21 +152,21 @@ func (p Pattern) Match(components []string, verb string) (map[string]string, err
 	l := len(components)
 	for _, op := range p.ops {
 		switch op.code {
-		case utilities.OpNop:
+		case OpNop:
 			continue
-		case utilities.OpPush, utilities.OpLitPush:
+		case OpPush, OpLitPush:
 			if pos >= l {
 				return nil, ErrNotMatch
 			}
 			c := components[pos]
-			if op.code == utilities.OpLitPush {
+			if op.code == OpLitPush {
 				if lit := p.pool[op.operand]; c != lit {
 					return nil, ErrNotMatch
 				}
 			}
 			stack = append(stack, c)
 			pos++
-		case utilities.OpPushM:
+		case OpPushM:
 			end := len(components)
 			if end < pos+p.tailLen {
 				return nil, ErrNotMatch
@@ -175,11 +174,11 @@ func (p Pattern) Match(components []string, verb string) (map[string]string, err
 			end -= p.tailLen
 			stack = append(stack, strings.Join(components[pos:end], "/"))
 			pos = end
-		case utilities.OpConcatN:
+		case OpConcatN:
 			n := op.operand
 			l := len(stack) - n
 			stack = append(stack[:l], strings.Join(stack[l:], "/"))
-		case utilities.OpCapture:
+		case OpCapture:
 			n := len(stack) - 1
 			captured[op.operand] = stack[n]
 			stack = stack[:n]
@@ -202,19 +201,19 @@ func (p Pattern) String() string {
 	var stack []string
 	for _, op := range p.ops {
 		switch op.code {
-		case utilities.OpNop:
+		case OpNop:
 			continue
-		case utilities.OpPush:
+		case OpPush:
 			stack = append(stack, "*")
-		case utilities.OpLitPush:
+		case OpLitPush:
 			stack = append(stack, p.pool[op.operand])
-		case utilities.OpPushM:
+		case OpPushM:
 			stack = append(stack, "**")
-		case utilities.OpConcatN:
+		case OpConcatN:
 			n := op.operand
 			l := len(stack) - n
 			stack = append(stack[:l], strings.Join(stack[l:], "/"))
-		case utilities.OpCapture:
+		case OpCapture:
 			n := len(stack) - 1
 			stack[n] = fmt.Sprintf("{%s=%s}", p.vars[op.operand], stack[n])
 		}

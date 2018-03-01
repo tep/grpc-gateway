@@ -8,7 +8,7 @@ import (
 
 	"github.com/golang/glog"
 	"github.com/grpc-ecosystem/grpc-gateway/examples/examplepb"
-	"github.com/grpc-ecosystem/grpc-gateway/runtime"
+	"github.com/grpc-ecosystem/grpc-gateway/grpcgw"
 	"golang.org/x/net/context"
 	"google.golang.org/grpc"
 )
@@ -22,8 +22,8 @@ var (
 )
 
 // newGateway returns a new gateway server which translates HTTP into gRPC.
-func newGateway(ctx context.Context, opts ...runtime.ServeMuxOption) (http.Handler, error) {
-	mux := runtime.NewServeMux(opts...)
+func newGateway(ctx context.Context, opts ...grpcgw.ServeMuxOption) (http.Handler, error) {
+	mux := grpcgw.NewServeMux(opts...)
 	dialOpts := []grpc.DialOption{grpc.WithInsecure()}
 	err := examplepb.RegisterEchoServiceHandlerFromEndpoint(ctx, mux, *echoEndpoint, dialOpts)
 	if err != nil {
@@ -82,7 +82,7 @@ func preflightHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 // Run starts a HTTP server and blocks forever if successful.
-func Run(address string, opts ...runtime.ServeMuxOption) error {
+func Run(address string, opts ...grpcgw.ServeMuxOption) error {
 	ctx := context.Background()
 	ctx, cancel := context.WithCancel(ctx)
 	defer cancel()
